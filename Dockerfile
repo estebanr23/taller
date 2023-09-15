@@ -1,7 +1,6 @@
 FROM php:8.2-fpm
 
 # COPY . /var/www/html
-COPY default.conf /etc/nginx/conf.d/default.conf
 
 RUN docker-php-ext-install pdo pdo_mysql
 RUN apt-get update && \

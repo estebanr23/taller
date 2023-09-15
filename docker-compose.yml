@@ -23,8 +23,8 @@ services:
     volumes:
       - mysql-db:/var/lib/mysql
     environment:
-      MYSQL_DATABASE: 'taller'
-      MYSQL_ROOT_PASSWORD: 'password'
+      MYSQL_DATABASE: taller
+      MYSQL_ROOT_PASSWORD: password 
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
     networks:

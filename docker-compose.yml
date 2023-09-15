@@ -24,7 +24,7 @@ services:
       - mysql-db:/var/lib/mysql
     environment:
       MYSQL_DATABASE: taller
-      MYSQL_ROOT_PASSWORD: password 
+      MYSQL_ROOT_PASSWORD: password-example
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
     networks:

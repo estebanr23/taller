@@ -23,11 +23,11 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 RUN composer install --no-interaction --optimize-autoloader --no-dev
 
 # Verifica permisos y habilita mod_rewrite
-RUN chown -R www-data:www-data /var/www
-RUN chmod 755 /var/www
+RUN chmod -R 755 /var/www/html && \
+    chown -R www-data:www-data /var/www/html
 
 # Copia el archivo de configuración de Apache
-COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
+COPY docker/apache/000-default.conf /etc/apache2/sites-available/000-default.conf
 
 # Habilita el sitio de Apache
 RUN a2ensite 000-default.conf

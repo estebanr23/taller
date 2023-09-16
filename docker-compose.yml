@@ -1,49 +1,11 @@
-version: "3.7"
-services: 
-  nginx:
-    image: nginx:stable-alpine
-    container_name: nginx
-    ports:
-      - 8080:80
-    volumes:
-      - .:/var/www/html
-    depends_on:
-      - php
-      - mysql
-    networks:
-      - laravel
+version: '3'
 
-  mysql:
-    image: mysql:8.1
-    container_name: mysql
-    restart: unless-stopped
-    tty: true
-    ports: 
-      - 3306:3306
-    volumes:
-      - mysql-db:/var/lib/mysql
-    environment:
-      MYSQL_DATABASE: taller
-      MYSQL_ROOT_PASSWORD: password-example
-      SERVICE_TAGS: dev
-      SERVICE_NAME: mysql
-    networks:
-      - laravel
-
-  php:
+services:
+  web:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: php
     ports:
-      - 9004:80
+      - "8000:80"
     volumes:
-    - .:/var/www/html
-    networks:
-      - laravel
-
-volumes:
-  mysql-db:
-
-networks:
-  laravel:
+      - .:/var/www/html

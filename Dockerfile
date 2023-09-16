@@ -1,26 +1,35 @@
-FROM php:8.2-fpm
+# Utiliza la imagen oficial de PHP con Apache
+FROM php:8.2.10-apache
 
-# COPY . /var/www/html
-COPY default.conf /etc/nginx/conf.d/default.conf
+# Configura el directorio de trabajo
+WORKDIR /var/www/html
 
-RUN docker-php-ext-install pdo pdo_mysql
+# Copia los archivos de tu proyecto a la imagen
+COPY . .
+
+# Instala las dependencias de PHP
 RUN apt-get update && \
-     apt-get install -y \
-         libzip-dev \
-         && docker-php-ext-install zip
+    apt-get install -y \
+    git \
+    zip \
+    unzip && \
+    docker-php-ext-install pdo_mysql && \
+    a2enmod rewrite
 
-# COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
+# Instala Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-ARG PUID=33
-ARG PGID=33
-# RUN groupmod -g $PGID www-data \
-#     && usermod -u $PUID www-data
+# Instala las dependencias de tu proyecto
+RUN composer install --no-interaction --optimize-autoloader --no-dev
 
-RUN chown -R www-data:www-data /var/www
-RUN chmod 755 /var/www
+# Copia el archivo de configuración de Apache
+COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
 
-# COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
+# Habilita el sitio de Apache
+RUN a2ensite 000-default.conf
 
-# CMD ["curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer"]
+# Define el puerto que usará la aplicación
+EXPOSE 80
+
+# Comando para iniciar el servidor Apache
+CMD ["apache2-foreground"]

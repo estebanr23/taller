@@ -14,10 +14,13 @@ class Customer extends Model
     public $timestamps = false;
     protected $guarded = [];
 
+    public function secretary()
+    {
+        return $this->belongsTo(Secretary::class);
+    }
+
     public function area()
     {
         return $this->belongsTo(Area::class);
     }
-
-
 }

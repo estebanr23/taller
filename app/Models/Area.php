@@ -13,4 +13,9 @@ class Area extends Model
 
     public $timestamps = false;
     protected $fillable = ['area_name'];
+
+    public function secretary()
+    {
+        return $this->belongsTo(Secretary::class);
+    }
 }

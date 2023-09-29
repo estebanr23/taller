@@ -14,9 +14,11 @@ return new class extends Migration
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('lastname');
             $table->string('dni')->unique();
             $table->string('phone')->nullable();
             $table->string('file_number')->nullable();
+            $table->foreignId('secretary_id')->constrained();
             $table->foreignId('area_id')->constrained();
             $table->softDeletes();
         });

@@ -61,6 +61,19 @@
                                     </span>
                                 </label>
                                 <label class="block">
+                                    <span> Apellido</span>
+                                    <span class="relative mt-1.5 flex">
+                                        <input
+                                            class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
+                                            value="{{ $apellido_cliente }}" wire:model="apellido_cliente" id="apellido_cliente"
+                                            placeholder="Apellido" type="text" disabled/>
+                                        <span
+                                            class="pointer-events-none absolute flex h-full w-10 items-center justify-center text-slate-400 peer-focus:text-primary dark:text-navy-300 dark:peer-focus:text-accent">
+                                            <i class="far fa-user text-base"></i>
+                                        </span>
+                                    </span>
+                                </label>
+                                <label class="block">
                                     <span> Numero de telefono</span>
                                     <span class="relative mt-1.5 flex">
                                         <input
@@ -74,6 +87,17 @@
                                         </span>
                                     </span>
                                 </label>
+
+                                <label class="block">
+                                    <span> Secretaria:</span>
+                                    <span class="relative mt-1.5 flex">
+                                        <input
+                                            class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2  placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
+                                            type="text" value="{{ $secretaria_nombre }}"
+                                            wire:model.defer="secretaria_nombre" id="secretaria_nombre" disabled/>
+                                    </span>
+                                  </label>
+
                                 <label class="block">
                                   <span> Area:</span>
                                   <span class="relative mt-1.5 flex">
@@ -82,7 +106,7 @@
                                           type="text" value="{{$area_nombre}}"
                                           wire:model.defer="area_nombre" id="area_nombre" disabled/>
                                   </span>
-                              </label>
+                                </label>
 
                                 <label class="block" >
                                     <span>Legajo</span>
@@ -133,6 +157,12 @@
                                     placeholder="Falla" wire:model="falla" type="text" disabled/>
                             </label>
                         </div>
+                        <label class="block">
+                            <span>Accesorios</span>
+                            <textarea rows="4" placeholder="" wire:model="accesorios"
+                                class="form-textarea mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent p-2.5 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
+                            </textarea>
+                        </label>
                         <label class="block">
                             <span>Informe cliente</span>
                             <textarea rows="4" placeholder="" wire:model="informe_cliente"

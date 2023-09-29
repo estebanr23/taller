@@ -14,7 +14,7 @@ class OrdenesVer extends Component
     protected $listeners = ['ver', 'notification'];
 
     public $showModal= false;
-    public $nombre_cliente,$telefono,$DNI,$area_nombre,$legajo,$falla,$informe_cliente,$informe_tecnico,$fecha_emision,$fecha_entrega,$ticket,$marca,$tipo,$modelo,$tecnico,$tipo_orden;
+    public $nombre_cliente,$apellido_cliente,$telefono,$DNI,$secretaria_nombre,$area_nombre,$legajo,$falla,$accesorios,$informe_cliente,$informe_tecnico,$fecha_emision,$fecha_entrega,$ticket,$marca,$tipo,$modelo,$tecnico,$tipo_orden;
     public $receptor='';
     public $orden='';
     public $estado='';
@@ -29,7 +29,9 @@ class OrdenesVer extends Component
 
         $this->DNI=$orden->Customer->dni;
         $this->nombre_cliente=$orden->Customer->name;
+        $this->apellido_cliente=$orden->Customer->lastname;
         $this->telefono=$orden->Customer->phone;
+        $this->secretaria_nombre=$orden->Customer->secretary->secretary_name;
         $this->area_nombre=$orden->Customer->area->area_name;
         $this->legajo=$orden->Customer->file_number;
         $this->tipo=$orden->Device->typeDevice->type_name;
@@ -38,10 +40,9 @@ class OrdenesVer extends Component
         $this->informe_cliente=$orden->report_customer;
         $this->informe_tecnico=$orden->report_technical;
         $this->falla=$orden->problem;
+        $this->accesorios=$orden->accessories;
         $this->receptor=$tecnico_receptor->name;
-        // $date = date_create($orden->date_emission);
         $this->fecha_emision=$orden->date_emission;
-        // $date = date_create($orden->date_delivery);
         $this->fecha_entrega=$orden->date_delivery;
         $this->estado=$orden->State->name;
         $this->ticket=$descripcion->description;
@@ -63,7 +64,7 @@ class OrdenesVer extends Component
 
 
     public function close() {
-        $this->reset(['DNI','consulta','nombre_cliente','telefono','area_nombre','legajo','tipo','marca','modelo','informe_cliente','informe_tecnico','falla','receptor','fecha_emision','fecha_entrega','estado','ticket','tecnico', 'showModal']);
+        $this->reset(['DNI','consulta','nombre_cliente', 'apellido_cliente', 'telefono', 'secretaria_nombre', 'area_nombre','legajo','tipo','marca','modelo','informe_cliente','informe_tecnico','falla', 'accesorios','receptor','fecha_emision','fecha_entrega','estado','ticket','tecnico', 'showModal']);
         $this->resetErrorBag();
     }
 

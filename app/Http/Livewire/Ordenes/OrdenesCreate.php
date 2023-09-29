@@ -14,6 +14,7 @@ use App\Models\Customer;
 use App\Models\TypeDevice;
 use App\Models\ModelDevice;
 use App\Models\Device;
+use App\Models\Secretary;
 use Illuminate\Support\Str;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
@@ -26,7 +27,7 @@ class OrdenesCreate extends Component
     public $EquipoForm=false;
     public $TecnicoForm=false;
     public $DatosCliente=false;
-    public $nombre_cliente,$telefono,$DNI,$legajo,$falla,$informe_cliente,$informe_tecnico,$fecha_emision,$fecha_entrega,$persona,$ticket;
+    public $nombre_cliente,$apellido_cliente,$telefono,$DNI,$legajo,$falla, $accesorios, $informe_cliente,$informe_tecnico,$fecha_emision,$fecha_entrega,$persona,$ticket;
     public $type_device_id='';
     public $brand_id='';
     public $tecnico_id='';
@@ -36,26 +37,28 @@ class OrdenesCreate extends Component
     public $orden='';
     public $estado='';
     public $tipo_orden=false;
-    // Areas
+    // Secretarias y Areas
+    public $secretary_id = '';
     public $area_id = '';
     public $area_name = '';
     public $showNewAreaInput = false;
-    //Equipos//
-    //tipos
+    // Equipos
+    // Tipos
     public $type_name = '';
     public $showNewTypeInput = false;
-    //Marca
+    // Marca
     public $brand_name='';
     public $showNewBrandInput = false;
-    //Modelo
+    // Modelo
     public $showNewModelInput = false;
-    //Numero de serie
+    // Numero de serie
     public $serial_number='';
     public $device;
 
 
     protected $rulesCliente = [
         'nombre_cliente' => 'required|string',
+        'apellido_cliente' => 'required|string',
         'DNI' => 'required|min:7',
         'telefono' => 'nullable|min:7',
         'legajo' => 'nullable',
@@ -67,7 +70,7 @@ class OrdenesCreate extends Component
         'model_id' => 'required',
         'type_device_id' => 'required',
         'falla'=>'required',
-        'informe_cliente'=>'required'
+        'accesorios'=>'string|nullable'
     ];
 
     protected $rulesTecnico = [
@@ -92,6 +95,7 @@ class OrdenesCreate extends Component
             'model_id.required' => 'Debe asociar una modelo al dispositivo',
             'type_device_id.required' => 'Debe asociar un tipo al dispositivo',
             'nombre_cliente.required' => 'El nombre es requerido',
+            'apellido_cliente.required' => 'El apellido es requerido',
             'DNI.required' => 'El documento es requerido',
             'DNI.min' => 'El documento debe tener al menos 7 caracteres',
             'telefono.min' => 'El telefono debe tener al menos 7 caracteres',
@@ -119,8 +123,6 @@ class OrdenesCreate extends Component
         $this->ClienteForm = false;
         $this->EquipoForm=true;
         $this->TecnicoForm=false;
-
-
     }
     public function ShowTecnico()
     {
@@ -132,28 +134,30 @@ class OrdenesCreate extends Component
     public function buscar()
     {
         $this->nombre_cliente = '';
+        $this->apellido_cliente = '';
         $this->telefono = '';
         $this->legajo = '';
+        $this->secretary_id = '';
         $this->area_id = '';
 
         $this->persona=Customer::where('dni',$this->DNI)->first();
+
         if($this->persona)
         {
-
             $this->nombre_cliente=$this->persona->name;
+            $this->apellido_cliente=$this->persona->lastname;
             $this->DNI=$this->persona->dni;
             $this->telefono=$this->persona->phone;
             $this->legajo=$this->persona->file_number;
+            $this->secretary_id=$this->persona->secretary_id;
             $this->area_id=$this->persona->area_id;
-
-
         }
+
         $this->DatosCliente=true;
     }
 
     public function Buscar_Serial()
     {
-
         $this->device=Device::where('serial_number',$this->serial_number)->first();
         if($this->device)
         {
@@ -171,11 +175,7 @@ class OrdenesCreate extends Component
             $this->brand_id='';
             $this->model_id='' ;
         }
-
-
-
     }
-
 
     public function Guardar()
     {
@@ -210,8 +210,9 @@ class OrdenesCreate extends Component
                 'receiver_user'=>$this->receptor,
                 'user_id'=>$this->tecnico_id,
                 'problem'=>$this->falla,
-                'report_customer'=>$this->informe_cliente,
-                'report_technical'=>$this->informe_tecnico,
+                'accessories' => $this->accesorios,
+                /* 'report_customer'=>$this->informe_cliente,
+                'report_technical'=>$this->informe_tecnico, */
                 'date_emission'=>$this->fecha_emision,
                 'date_delivery'=>$this->fecha_entrega,
                 'state_id'=>$this->estado,
@@ -225,9 +226,11 @@ class OrdenesCreate extends Component
         {
             $nueva_persona=Customer::create([
                 'name' =>  $this->nombre_cliente,
+                'lastname' =>  $this->apellido_cliente,
                 'dni' =>  $this->DNI,
                 'phone' => $this->telefono,
                 'file_number' => $this->legajo,
+                'secretary_id' =>  $this->secretary_id,
                 'area_id' =>  $this->area_id,
             ]);
 
@@ -238,8 +241,9 @@ class OrdenesCreate extends Component
                 'receiver_user'=>$this->receptor,
                 'user_id'=>$this->tecnico_id,
                 'problem'=>$this->falla,
-                'report_customer'=>$this->informe_cliente,
-                'report_technical'=>$this->informe_tecnico,
+                'accessories' => $this->accesorios,
+                /* 'report_customer'=>$this->informe_cliente,
+                'report_technical'=>$this->informe_tecnico, */
                 'date_emission'=>$this->fecha_emision,
                 'date_delivery'=>$this->fecha_entrega,
                 'state_id'=>$this->estado,
@@ -376,7 +380,8 @@ class OrdenesCreate extends Component
             'brands' => Brand::all(),
             'types' => TypeDevice::all(),
             'tecnicos'=>User::all(),
-            'areas' => Area::all(),
+            'secretaries' => Secretary::all(),
+            'areas' => Area::where('secretary_id', $this->secretary_id)->get(),
             'estados'=>State::all(),
             'user'=>Auth::user(),
             'models' => ModelDevice::where('brand_id', $this->brand_id)->get()

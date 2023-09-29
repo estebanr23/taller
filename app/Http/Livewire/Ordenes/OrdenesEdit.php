@@ -16,7 +16,7 @@ class OrdenesEdit extends Component
 
     public $showModal= false;
 
-    public $falla,$informe_cliente,$informe_tecnico,$data;
+    public $falla,$accesorios,$informe_cliente,$informe_tecnico,$data;
     public $type_device_id='';
     public $brand_id='';
     public $model_id = '';
@@ -31,6 +31,7 @@ class OrdenesEdit extends Component
         $this->brand_id=$equipo->brand_id;
         $this->model_id=$equipo->model_id;
         $this->falla=$orden->problem;
+        $this->accesorios=$orden->accessories;
         $this->informe_cliente=$orden->report_customer;
         $this->informe_tecnico=$orden->report_technical;
     }

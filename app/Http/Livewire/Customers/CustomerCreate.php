@@ -4,20 +4,23 @@ namespace App\Http\Livewire\Customers;
 
 use App\Models\Area;
 use App\Models\Customer;
+use App\Models\Secretary;
 use Livewire\Component;
 
 class CustomerCreate extends Component
 {
     public $showModal = false;
 
-    public $name, $dni, $phone, $file_number;
-    // Areas
+    public $name, $lastname, $dni, $phone, $file_number;
+    // Secretarias y Areas
+    public $secretary_id = '';
     public $area_id = '';
     public $area_name = '';
     public $showNewAreaInput = false;
 
     protected $rules = [
         'name' => 'required|string',
+        'lastname' => 'required|string',
         'dni' => 'required|min:7|unique:customers,dni',
         'phone' => 'nullable|min:7',
         'file_number' => 'nullable|unique:customers,file_number',
@@ -28,12 +31,14 @@ class CustomerCreate extends Component
     {
         return [
             'name.required' => 'El nombre es requerido',
+            'lastname.required' => 'El apellido es requerido',
             'dni.required' => 'El documento es requerido',
             'dni.min' => 'El documento debe tener al menos 7 caracteres',
             'dni.unique' => 'El documento ya existe',
             'phone.min' => 'El telefono debe tener al menos 7 caracteres',
             'file_number.unique' => 'El legajo ya existe',
             'area_id.required' => 'El area es requerida',
+            'secretary_id.required' => 'La secretaria es requerida',
         ];
     }
 
@@ -43,9 +48,11 @@ class CustomerCreate extends Component
 
         Customer::create([
             'name' => $this->name,
+            'lastname' => $this->lastname,
             'dni' => $this->dni,
             'phone' => $this->phone,
             'file_number' => $this->file_number,
+            'secretary_id' => $this->secretary_id,
             'area_id' => $this->area_id,
         ]);
 
@@ -56,7 +63,7 @@ class CustomerCreate extends Component
 
     public function close()
     {
-        $this->reset(['name', 'dni', 'phone', 'file_number', 'area_id', 'showModal']);
+        $this->reset(['name', 'lastname', 'dni', 'phone', 'file_number', 'area_id', 'secretary_id', 'showModal']);
         $this->resetErrorBag();
     }
 
@@ -88,7 +95,8 @@ class CustomerCreate extends Component
     public function render()
     {
         return view('livewire.customers.customer-create', [
-            'areas' => Area::all()
+            'secretaries' => Secretary::all(),
+            'areas' => Area::where('secretary_id', $this->secretary_id)->get(),
         ]);
     }
 }

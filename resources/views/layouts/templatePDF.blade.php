@@ -74,9 +74,10 @@
           </div>
           <div class="tm_padd_15_20 tm_round_border">
             <p class="tm_mb5"><b class="tm_primary_color">Accesorios:</b></p>
-            <ul class="tm_m0 tm_note_list">
+            <p>{{ $order->accessories }}</p>
+            {{-- <ul class="tm_m0 tm_note_list">
               <li>No tiene.</li>
-            </ul>
+            </ul> --}}
           </div><!-- .tm_note -->
           <br /><br /><br /><br /><br /><br />
           <div class="tm_invoice_footer">

@@ -29,8 +29,8 @@
                             Buscar
                         </button>
                     </div>
-                    @if ($DatosCliente)
 
+                    @if ($DatosCliente)
                     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                         <label class="block">
                             <span> Nombre</span>
@@ -47,7 +47,22 @@
                             @error('nombre_cliente')<div class="text-error">{{ $message }}</div>@enderror
                         </label>
                         <label class="block">
-                            <span> Numero de telefono</span>
+                            <span> Apellido</span>
+                            <span class="relative mt-1.5 flex">
+                                <input
+                                    class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
+                                    value="{{ $apellido_cliente }}" wire:model="apellido_cliente" id="apellido_cliente"
+                                    placeholder="Apellido" type="text" />
+                                <span
+                                    class="pointer-events-none absolute flex h-full w-10 items-center justify-center text-slate-400 peer-focus:text-primary dark:text-navy-300 dark:peer-focus:text-accent">
+                                    <i class="far fa-user text-base"></i>
+                                </span>
+                            </span>
+                            @error('apellido_cliente')<div class="text-error">{{ $message }}</div>@enderror
+                        </label>
+
+                        <label class="block">
+                            <span> Telefono</span>
                             <span class="relative mt-1.5 flex">
                                 <input
                                     class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
@@ -61,68 +76,7 @@
                             </span>
                             @error('telefono')<div class="text-error">{{ $message }}</div>@enderror
                         </label>
-                        @if (!$showNewAreaInput)
                         <label class="block">
-                        <span>Area:</span>
-                        <div class="flex justify-between align-middle gap-2">
-                            <select
-                            class="mt-1.5 w-full"
-                            x-init="$el._tom = new Tom($el,{create: false,sortField: {field: 'text',direction: 'asc'}})"
-                            wire:model="area_id"
-                            >
-                                <option value="" disabled>-- Seleccionar área --</option>
-                            @foreach ($areas as $area)
-                                <option value="{{ $area->id }}">{{ $area->area_name }}</option>
-                            @endforeach
-                            </select>
-                            <button
-                            class="btn h-9 w-9 mt-1.5 bg-primary p-0 font-medium text-white hover:bg-primary-focus hover:shadow-lg hover:shadow-primary/50 focus:bg-primary-focus focus:shadow-lg focus:shadow-primary/50 active:bg-primary-focus/90"
-                            wire:click="toggleNewAreaInput"
-                            x-tooltip.light="'Ingresar nueva área'"
-                            >
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                <path d="M12 5l0 14"></path>
-                                <path d="M5 12l14 0"></path>
-                            </svg>
-                            </button>
-                        </div>
-                        @error('area_id') <span class="text-error">{{ $message }}</span> @enderror
-                        </label>
-                        @else
-                        <label class="block">
-                        <span>Area:</span>
-                        <div class="flex justify-between align-middle gap-2">
-                            <input wire:model="area_name" class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent" placeholder="Ingrese el nombre del nuevo modelo" type="text">
-                            <button
-                            class="btn h-9 w-9 mt-1.5 bg-success p-0 font-medium text-white hover:bg-success-focus hover:shadow-lg hover:shadow-success/50 focus:bg-success-focus focus:shadow-lg focus:shadow-success/50 active:bg-success-focus/90"
-                            wire:click="storeNewArea"
-                            x-tooltip.light="'Registrar área'"
-                            >
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                <path d="M5 12l5 5l10 -10"></path>
-                            </svg>
-                            </button>
-                            <button
-                            class="btn h-9 w-9 mt-1.5 bg-error p-0 font-medium text-white hover:bg-error-focus hover:shadow-lg hover:shadow-error/50 focus:bg-error-focus focus:shadow-lg focus:shadow-error/50 active:bg-error-focus/90"
-                            wire:click="toggleNewAreaInput"
-                            x-tooltip.light="'Volver a listado de áreas'"
-                            >
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-x" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                <path d="M18 6l-12 12"></path>
-                                <path d="M6 6l12 12"></path>
-                            </svg>
-                            </button>
-                        </div>
-                        @if($errors->has('area_name'))
-                            <span class="text-error">{{ $errors->first('area_name') }}</span>
-                        @endif
-                        </label>
-                        @endif
-
-                        <label class="block sm:col-span-2">
                             <span>Legajo</span>
                             <div class="relative mt-1.5 flex">
                                 <input
@@ -136,7 +90,87 @@
                             </div>
                             @error('legajo')<div class="text-error">{{ $message }}</div>@enderror
                         </label>
+
+                        <label class="block">
+                            <span>Secretaria:</span>
+                            <select
+                            class="mt-1.5 w-full"
+                            x-init="$el._tom = new Tom($el,{create: false,sortField: {field: 'text',direction: 'asc'}})"
+                            wire:model="secretary_id"
+                            {{-- wire:change="buscar_area" --}}
+                            >
+                                <option value="" disabled>-- Seleccionar secretaria --</option>
+                                @foreach ($secretaries as $secretary)
+                                    <option value="{{ $secretary->id }}">{{ $secretary->secretary_name }}</option>
+                                @endforeach
+                            </select>
+                            @error('secretary_id') <span class="text-error">{{ $message }}</span> @enderror
+                        </label>
+
+                        @if (!$showNewAreaInput)
+                            <label class="block">
+                                <span>Area:</span>
+                                <div class="flex justify-between align-middle gap-2">
+                                    <select
+                                    class="mt-1.5 w-full"
+                                    x-init="$el._tom = new Tom($el,{create: false,sortField: {field: 'text',direction: 'asc'}})"
+                                    wire:model="area_id"
+                                    >
+                                        <option value="" disabled>-- Seleccionar área --</option>
+                                        @if ($areas)  
+                                            @foreach ($areas as $area)
+                                                <option value="{{ $area->id }}">{{ $area->area_name }}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                    <button
+                                    class="btn h-9 w-9 mt-1.5 bg-primary p-0 font-medium text-white hover:bg-primary-focus hover:shadow-lg hover:shadow-primary/50 focus:bg-primary-focus focus:shadow-lg focus:shadow-primary/50 active:bg-primary-focus/90"
+                                    wire:click="toggleNewAreaInput"
+                                    x-tooltip.light="'Ingresar nueva área'"
+                                    >
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M12 5l0 14"></path>
+                                        <path d="M5 12l14 0"></path>
+                                    </svg>
+                                    </button>
+                                </div>
+                                @error('area_id') <span class="text-error">{{ $message }}</span> @enderror
+                            </label>
+                        @else
+                            <label class="block">
+                                <span>Area:</span>
+                                <div class="flex justify-between align-middle gap-2">
+                                    <input wire:model="area_name" class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent" placeholder="Ingrese el nombre del nuevo modelo" type="text">
+                                    <button
+                                    class="btn h-9 w-9 mt-1.5 bg-success p-0 font-medium text-white hover:bg-success-focus hover:shadow-lg hover:shadow-success/50 focus:bg-success-focus focus:shadow-lg focus:shadow-success/50 active:bg-success-focus/90"
+                                    wire:click="storeNewArea"
+                                    x-tooltip.light="'Registrar área'"
+                                    >
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M5 12l5 5l10 -10"></path>
+                                    </svg>
+                                    </button>
+                                    <button
+                                    class="btn h-9 w-9 mt-1.5 bg-error p-0 font-medium text-white hover:bg-error-focus hover:shadow-lg hover:shadow-error/50 focus:bg-error-focus focus:shadow-lg focus:shadow-error/50 active:bg-error-focus/90"
+                                    wire:click="toggleNewAreaInput"
+                                    x-tooltip.light="'Volver a listado de áreas'"
+                                    >
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-x" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M18 6l-12 12"></path>
+                                        <path d="M6 6l12 12"></path>
+                                    </svg>
+                                    </button>
+                                </div>
+                                @if($errors->has('area_name'))
+                                    <span class="text-error">{{ $errors->first('area_name') }}</span>
+                                @endif
+                            </label>
+                        @endif
                     </div>
+
                     <div class="flex justify-end space-x-2">
                         <button wire:click="ShowEquipo"
                             class="btn space-x-2 bg-primary font-medium text-white hover:bg-primary-focus focus:bg-primary-focus active:bg-primary-focus/90 dark:bg-accent dark:hover:bg-accent-focus dark:focus:bg-accent-focus dark:active:bg-accent/90">
@@ -365,14 +399,23 @@
                     @endif
 
                 </div>
-                    <label class="block sm:col-span-6">
+                    {{-- <label class="block sm:col-span-6">
+                        <span>Falla</span>
+                        <textarea rows="4" placeholder="" wire:model="falla"
+                            class="form-textarea mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent p-2.5 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
+                        </textarea>
+                        @error('falla') <span class="text-error">{{ $message }}</span> @enderror
+                    </label> --}}
+
+                    <label class="block">
                         <span>Falla</span>
                         <textarea rows="4" placeholder="" wire:model="falla"
                             class="form-textarea mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent p-2.5 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
                         </textarea>
                         @error('falla') <span class="text-error">{{ $message }}</span> @enderror
                     </label>
-                    <label class="block">
+
+                    {{-- <label class="block">
                         <span>Informe cliente</span>
                         <textarea rows="4" placeholder="" wire:model="informe_cliente"
                             class="form-textarea mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent p-2.5 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
@@ -384,6 +427,14 @@
                         <textarea rows="4" placeholder="" wire:model="informe_tecnico"
                             class="form-textarea mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent p-2.5 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
                         </textarea>
+                    </label> --}}
+
+                    <label class="block">
+                        <span>Accesorios</span>
+                        <textarea rows="4" placeholder="" wire:model="accesorios"
+                            class="form-textarea mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent p-2.5 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
+                        </textarea>
+                        @error('accesorios') <span class="text-error">{{ $message }}</span> @enderror
                     </label>
 
                     <div class="flex justify-end space-x-2">

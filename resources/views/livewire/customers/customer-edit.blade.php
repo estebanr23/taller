@@ -21,9 +21,15 @@
     
                 <div class="space-y-4">
                   <label class="block">
-                    <span>Nombre y Apellido:</span>
-                    <input wire:model.defer="name" class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent" placeholder="Nombre y Apellido" type="text">
+                    <span>Nombre:</span>
+                    <input wire:model.defer="name" class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent" placeholder="Nombre" type="text">
                     @error('name')<div class="text-error">{{ $message }}</div>@enderror
+                  </label>
+
+                  <label class="block">
+                    <span>Apellido:</span>
+                    <input wire:model.defer="lastname" class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent" placeholder="Apellido" type="text">
+                    @error('lastname')<div class="text-error">{{ $message }}</div>@enderror
                   </label>
     
                   <label class="block">
@@ -37,13 +43,34 @@
                     <input wire:model.defer="phone" class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent" placeholder="Telefono" type="text">
                     @error('phone')<div class="text-error">{{ $message }}</div>@enderror
                   </label>
+
+                  <label class="block">
+                    <span>Secretaria:</span>
+                    <div class="flex justify-between align-middle gap-2">
+                      <select
+                      class="mt-1.5 w-full"
+                      x-init="$el._tom = new Tom($el,{create: false,sortField: {field: 'text',direction: 'asc'}})"
+                      wire:model="secretary_id"
+                      >
+                          <option value="" disabled>-- Seleccionar secretaria --</option>
+                      @foreach ($secretaries as $secretary)
+                          <option value="{{ $secretary->id }}">{{ $secretary->secretary_name }}</option>
+                      @endforeach
+                      </select>
+                    </div>  
+                    @error('secretary_id')<div class="text-error">{{ $message }}</div>@enderror
+                  </label>
     
                   <label class="block">
                     <span>Area:</span>
-                    <select wire:model.defer="area_id" class="form-select mt-1.5 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:bg-navy-700 dark:hover:border-navy-400 dark:focus:border-accent">
-                      <option value="" selected disabled>-- Seleccionar --</option>
+                    <select
+                      class="mt-1.5 w-full"
+                      x-init="$el._tom = new Tom($el,{create: false,sortField: {field: 'text',direction: 'asc'}})"
+                      wire:model="area_id"
+                    >
+                        <option value="" disabled>-- Seleccionar área --</option>
                       @foreach ($areas as $area)
-                        <option value="{{ $area->id }}">{{ $area->name }}</option>
+                        <option value="{{ $area->id }}">{{ $area->area_name }}</option>
                       @endforeach
                     </select>
                     @error('area_id')<div class="text-error">{{ $message }}</div>@enderror

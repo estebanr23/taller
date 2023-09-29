@@ -11,11 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('areas', function (Blueprint $table) {
+        Schema::create('secretaries', function (Blueprint $table) {
             $table->id();
-            $table->string('area_name')->unique();
-            $table->foreignId('secretary_id')->constrained();
-            $table->softDeletes();
+            $table->string('secretary_name')->unique();
         });
     }
 
@@ -24,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('areas');
+        Schema::dropIfExists('secretaries');
     }
 };

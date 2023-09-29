@@ -86,7 +86,7 @@
                             <tr class="border-y border-transparent border-b-slate-200 dark:border-b-navy-500">
                                 <td class="whitespace-nowrap px-4 py-3 sm:px-5">{{ $orden->id }}</td>
                                 <td class="whitespace-nowrap px-3 py-3 font-medium text-slate-700 dark:text-navy-100 lg:px-5">{{ $orden->problem }}</td>
-                                <td class="whitespace-nowrap px-4 py-3 sm:px-5">{{ $orden->Customer->name}}</td>
+                                <td class="whitespace-nowrap px-4 py-3 sm:px-5">{{ $orden->Customer->name . ' ' . $orden->Customer->lastname}} </td>
                                 @php
                                     $date = date_create($orden->date_emission);
                                 @endphp

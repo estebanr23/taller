@@ -18,7 +18,8 @@ return new class extends Migration
             $table->string('receiver_user'); // Usuario receptor
             $table->foreignId('user_id')->nullable(); // Usuario tecnico
             $table->string('problem');
-            $table->string('report_customer');
+            $table->string('accessories')->nullable();
+            $table->string('report_customer')->nullable();
             $table->string('report_technical')->nullable();
             $table->date('date_emission');
             $table->date('date_delivery')->nullable();

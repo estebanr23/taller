@@ -26,5 +26,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             StatusSeeder::class
         ]);
+
+        \App\Models\Secretary::factory(10)->create();
     }
 }

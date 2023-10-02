@@ -25,7 +25,7 @@
                 <div class="flex flex-col overflow-y-auto px-4 py-4 sm:px-5">
                     <div class="space-y-4">
 
-                        <div class="grid grid-cols-1 gap-4 sm:grid-cols-12">
+                        <div class="grid grid-cols-1 gap-4">
                             <label class="block sm:col-span-6">
                                 <span>Falla</span>
                                 <input
@@ -49,19 +49,20 @@
                                 <option value="{{ $estado->id }}">{{ $estado->name }}</option>
                             @endforeach
                             </select>
-                            @error('fecha_entrega')
+                            @error('informe_tecnico')
                             <span class="text-error">{{ $message }}</span>
                         @enderror
                         </label>
 
-                        <label class="block ">
+                        {{-- <label class="block ">
                             <span> Fecha de entrega</span>
                             <span class="relative mt-1.5 flex">
                                 <input wire:model="fecha_entrega"
                                     class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2  placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                                     type="date" />
                             </span>
-                        </label>
+                            @error('fecha_entrega')
+                        </label> --}}
 
                         <button wire:click="close"
                             class="btn min-w-[7rem] rounded-full border border-slate-300 font-medium text-slate-800 hover:bg-slate-150 focus:bg-slate-150 active:bg-slate-150/80 dark:border-navy-450 dark:text-navy-50 dark:hover:bg-navy-500 dark:focus:bg-navy-500 dark:active:bg-navy-500/90">

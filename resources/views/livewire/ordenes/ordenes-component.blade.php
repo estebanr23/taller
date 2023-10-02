@@ -24,10 +24,11 @@
 
             </div>
             @if (session('message'))
-            <div x-data="{show: true}" x-init="setTimeout(() => show = false, 3000)" x-show="show" class="btn bg-success/10 font-medium text-success hover:bg-success/20 focus:bg-success/20 active:bg-success/25">
-              <span>{{ session('message') }}</span>
-            </div>
-          @endif
+            {{ dd($message,  $class) }}
+                <div x-data="{show: true}"  x-show="show" x-init="setTimeout(() => show = false, 3000)" class="{{ session('class') }}">
+                    <span>{{ session('message') }}</span>
+                </div>
+            @endif
             {{-- Tabla usuario --}}
 
             <div class="card mt-3">
@@ -65,15 +66,19 @@
                             </th>
                             <th
                             class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5"
-                        >
-                            Tipo
-                        </th>
-                        <th
-                        class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5"
-                        >
-                            Estado
-                        </th>
-
+                            >
+                                Tipo
+                            </th>
+                            <th
+                            class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5"
+                            >
+                                Estado
+                            </th>
+                            <th
+                            class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5"
+                            >
+                                Tecnico
+                            </th>
                             <th
                                 class="whitespace-nowrap rounded-tr-lg bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5"
                             >
@@ -96,7 +101,8 @@
                                 @endphp
                                 <td class="whitespace-nowrap px-4 py-3 sm:px-5">{{ date_format($date, "d.m.Y") }}</td>
                                 <td class="whitespace-nowrap px-4 py-3 sm:px-5">{{ $orden->type_order }}</td>
-                                <td class="whitespace-nowrap px-4 py-3 sm:px-5">{{ $orden->State->name}}</td>
+                                <td class="whitespace-nowrap px-4 py-3 sm:px-5">{{ $orden->State->name }}</td>
+                                <td class="whitespace-nowrap px-4 py-3 sm:px-5">{{ $orden->User->name }}</td>
                                 <td class="whitespace-nowrap px-4 py-3 sm:px-5">
                                     <span>
                                         <div class="flex justify-start space-x-2">

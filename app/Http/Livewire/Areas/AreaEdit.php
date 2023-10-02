@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Areas;
 
 use App\Models\Area;
+use App\Models\Secretary;
 use Livewire\Component;
 
 class AreaEdit extends Component
@@ -10,7 +11,7 @@ class AreaEdit extends Component
     protected $listeners = ['edit'];
 
     public $showModal = false;
-    public $area_name;
+    public $area_name, $secretary_id;
     public $data;
 
     public function rules()
@@ -32,6 +33,7 @@ class AreaEdit extends Component
     {
         $this->data = $area;
         $this->area_name = $area->area_name;
+        $this->secretary_id = $area->secretary_id;
         $this->showModal = true;
     }
 
@@ -40,7 +42,8 @@ class AreaEdit extends Component
         $this->validate();
 
         $this->data->update([
-            "area_name" => $this->area_name
+            "area_name" => $this->area_name,
+            "secretary_id" => $this->secretary_id
         ]);
 
         $this->close();
@@ -51,12 +54,13 @@ class AreaEdit extends Component
 
     public function close() 
     {
-        $this->reset('area_name', 'showModal');
+        $this->reset('area_name', 'secretary_id', 'showModal');
         $this->resetErrorBag();
     }
 
     public function render()
     {
-        return view('livewire.areas.area-edit');
+        $secretaries = Secretary::all();
+        return view('livewire.areas.area-edit', compact('secretaries'));
     }
 }

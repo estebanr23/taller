@@ -19,8 +19,8 @@ class StatusSeeder extends Seeder
 
         DB::table('states')->insert([
             ['name' => 'En Reparación'],
-            ['name' => 'En Espera de'],
-            ['name' => 'Repuesto'],
+            ['name' => 'Espera de Repuesto'],
+            ['name' => 'Equipo Dañando'],
             ['name' => 'Para dar de baja'],
             ['name' => 'Solucionado']
         ]);

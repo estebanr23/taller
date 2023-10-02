@@ -75,13 +75,16 @@ class CustomerCreate extends Component
 
     public function storeNewArea()
     {
+        
         $validatedData = $this->validate(
             [
-                'area_name' => 'required|string|max:255|unique:areas'
+                'area_name' => 'required|string|max:255|unique:areas',
+                'secretary_id' => 'required',
             ],
             [
                 'area_name.required' => 'El nombre es requerido',
-                'area_name.unique' => 'El área ya existe'
+                'area_name.unique' => 'El área ya existe',
+                'secretary_id.required' => 'La secretaria es requerida',
             ]
         );
 

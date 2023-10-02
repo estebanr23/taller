@@ -14,7 +14,7 @@ class OrdenesVer extends Component
     protected $listeners = ['ver', 'notification'];
 
     public $showModal= false;
-    public $nombre_cliente,$apellido_cliente,$telefono,$DNI,$secretaria_nombre,$area_nombre,$legajo,$falla,$accesorios,$informe_cliente,$informe_tecnico,$fecha_emision,$fecha_entrega,$ticket,$marca,$tipo,$modelo,$tecnico,$tipo_orden;
+    public $nombre_cliente,$apellido_cliente,$telefono,$DNI,$secretaria_nombre,$area_nombre,$legajo,$falla,$accesorios,$informe_cliente,$informe_tecnico,$fecha_emision,$fecha_prometida,$fecha_entrega,$ticket,$marca,$tipo,$modelo,$tecnico,$tipo_orden;
     public $receptor='';
     public $orden='';
     public $estado='';
@@ -42,8 +42,9 @@ class OrdenesVer extends Component
         $this->falla=$orden->problem;
         $this->accesorios=$orden->accessories;
         $this->receptor=$tecnico_receptor->name;
-        $this->fecha_emision=$orden->date_emission;
-        $this->fecha_entrega=$orden->date_delivery;
+        $this->fecha_emision=$orden->date_emission; // Fecha de emision
+        $this->fecha_prometida=$orden->date_promise; // Fecha estimada de entrega
+        $this->fecha_entrega=$orden->date_delivery; // Fecha de entrega final
         $this->estado=$orden->State->name;
         $this->ticket=$descripcion->description;
         $this->tipo_orden=$orden->type_order;

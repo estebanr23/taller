@@ -66,6 +66,7 @@ class CustomerEdit extends Component
             'dni' => $this->dni,
             'phone' => $this->phone,
             'file_number' => $this->file_number,
+            'secretary_id' => $this->secretary_id,
             'area_id' => $this->area_id,
         ]);
 
@@ -77,7 +78,7 @@ class CustomerEdit extends Component
 
     public function close()
     {
-        $this->reset(['name', 'lastname', 'dni', 'phone', 'file_number', 'area_id', 'showModal']);
+        $this->reset(['name', 'lastname', 'dni', 'phone', 'file_number', 'area_id', 'secretary_id', 'showModal']);
         $this->resetErrorBag();
     }
 

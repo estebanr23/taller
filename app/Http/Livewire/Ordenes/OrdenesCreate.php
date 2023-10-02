@@ -27,11 +27,11 @@ class OrdenesCreate extends Component
     public $EquipoForm=false;
     public $TecnicoForm=false;
     public $DatosCliente=false;
-    public $nombre_cliente,$apellido_cliente,$telefono,$DNI,$legajo,$falla, $accesorios, $informe_cliente,$informe_tecnico,$fecha_emision,$fecha_entrega,$persona,$ticket;
+    public $nombre_cliente,$apellido_cliente,$telefono,$DNI,$legajo,$falla, $accesorios, $informe_cliente,$informe_tecnico,$fecha_emision,$fecha_prometida,$persona,$ticket;
     public $type_device_id='';
     public $brand_id='';
     public $tecnico_id='';
-    public $receptor='';
+    public $receptor= ''; // El usuario receptor es el usuario logueado
     public $model_id = '';
     public $model_name = '';
     public $orden='';
@@ -75,6 +75,7 @@ class OrdenesCreate extends Component
 
     protected $rulesTecnico = [
         'fecha_emision'=>'required',
+        'fecha_prometida'=>'required',
         'orden'=>'required',
         'ticket'=>'required|unique:tickets,description',
         'receptor'=>'required',
@@ -84,7 +85,7 @@ class OrdenesCreate extends Component
 
     public function mount() {
         $this->fecha_emision = Carbon::now()->toDateString();
-        $this->receptor = Auth::user()->id;
+        $this->receptor = Auth::user()->name;
     }
 
     protected function messages()
@@ -101,6 +102,7 @@ class OrdenesCreate extends Component
             'telefono.min' => 'El telefono debe tener al menos 7 caracteres',
             'area_id.required' => 'El area es requerida',
             'fecha_emision'=>'Fecha en la que se crea la orden requerido',
+            'fecha_prometida'=>'Fecha estimada en la que se deberia finalzar la order',
             'orden.required'=>'Tipo de orden requerido',
             'ticket.required'=>'Tiene que generar un numero de ticket',
             'ticket.unique'=>'El ticket no se puede repetir',
@@ -207,14 +209,15 @@ class OrdenesCreate extends Component
             $order = Ordenes::create([
                 'device_id'=>$this->device->id,
                 'customer_id'=>$this->persona->id,
-                'receiver_user'=>$this->receptor,
+                'receiver_user'=>auth()->user()->id, // El usuario receptor es el usuario logueado
                 'user_id'=>$this->tecnico_id,
                 'problem'=>$this->falla,
                 'accessories' => $this->accesorios,
                 /* 'report_customer'=>$this->informe_cliente,
                 'report_technical'=>$this->informe_tecnico, */
                 'date_emission'=>$this->fecha_emision,
-                'date_delivery'=>$this->fecha_entrega,
+                'date_promise'=>$this->fecha_prometida,
+                // 'date_delivery'=>$this->fecha_entrega,
                 'state_id'=>$this->estado,
                 'type_order'=>$this->orden,
                 'remote_repair'=>$this->tipo_orden,
@@ -238,14 +241,15 @@ class OrdenesCreate extends Component
             $order = Ordenes::create([
                 'device_id'=>$this->type_device_id,
                 'customer_id'=>$nueva_persona->id,
-                'receiver_user'=>$this->receptor,
+                'receiver_user'=>Auth::user()->id,
                 'user_id'=>$this->tecnico_id,
                 'problem'=>$this->falla,
                 'accessories' => $this->accesorios,
                 /* 'report_customer'=>$this->informe_cliente,
                 'report_technical'=>$this->informe_tecnico, */
                 'date_emission'=>$this->fecha_emision,
-                'date_delivery'=>$this->fecha_entrega,
+                'date_promise'=>$this->fecha_prometida,
+                // 'date_delivery'=>$this->fecha_entrega,
                 'state_id'=>$this->estado,
                 'type_order'=>$this->orden,
                 'remote_repair'=>$this->tipo_orden,
@@ -269,11 +273,13 @@ class OrdenesCreate extends Component
     {
         $validatedData = $this->validate(
             [
-                'area_name' => 'required|string|max:255|unique:areas'
+                'area_name' => 'required|string|max:255|unique:areas',
+                'secretary_id' => 'required',
             ],
             [
                 'area_name.required' => 'El nombre es requerido',
-                'area_name.unique' => 'El área ya existe'
+                'area_name.unique' => 'El área ya existe',
+                'secretary_id.required' => 'La secretaria es requerida',
             ]
         );
 

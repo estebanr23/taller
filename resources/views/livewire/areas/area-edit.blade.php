@@ -20,6 +20,23 @@
                     <input wire:model.defer="area_name" class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent" placeholder="Nombre" type="text">
                     @error('area_name')<div class="text-error">{{ $message }}</div>@enderror
                   </label>
+
+                  <label class="block">
+                    <span>Secretaria:</span>
+                    <div class="flex justify-between align-middle gap-2">
+                      <select
+                      class="mt-1.5 w-full"
+                      x-init="$el._tom = new Tom($el,{create: false,sortField: {field: 'text',direction: 'asc'}})"
+                      wire:model="secretary_id"
+                      >
+                          <option value="" disabled>-- Seleccionar secretaria --</option>
+                      @foreach ($secretaries as $secretary)
+                          <option value="{{ $secretary->id }}">{{ $secretary->secretary_name }}</option>
+                      @endforeach
+                      </select>
+                    </div>  
+                    @error('secretary_id')<div class="text-error">{{ $message }}</div>@enderror
+                  </label>
     
                   <div class="space-x-2 text-right relative">
                     <button 

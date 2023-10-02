@@ -471,34 +471,34 @@
                 <div class="mt-4 space-y-4">
                     <div class="grid grid-cols-1 gap-4 sm:grid-cols-12">
                         <label class="block sm:col-span-6">
-                            <span>Seleccione Receptor:</span>
-                            <div class="flex justify-between align-middle gap-2">
-                                <select class="mt-1.5 w-full" x-init="$el._tom = new Tom($el, { create: false, sortField: { field: 'text', direction: 'asc' } })" wire:model="receptor">
-                                    <option value="" disabled>-- Seleccionar un receptor --</option>
-                                    @foreach ($tecnicos as $tecnico)
-                                        <option value="{{ $tecnico->id }}">{{ $tecnico->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            @error('receptor')
-                                <span class="text-error">{{ $message }}</span>
-                            @enderror
+                            <span> Receptor</span>
+                            <span class="relative mt-1.5 flex">
+                                <input
+                                    class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
+                                    value="{{ auth()->user()->name }}"
+                                    type="text" disabled/>
+                                <span
+                                    class="pointer-events-none absolute flex h-full w-10 items-center justify-center text-slate-400 peer-focus:text-primary dark:text-navy-300 dark:peer-focus:text-accent">
+                                    <i class="far fa-user text-base"></i>
+                                </span>
+                            </span>
                         </label>
+
                         @if(auth()->user()->role == 'administrador')
-                        <label class="block sm:col-span-6">
-                            <span>Seleccione el tecnico:</span>
-                            <div class="flex justify-between align-middle gap-2">
-                                <select class="mt-1.5 w-full" x-init="$el._tom = new Tom($el, { create: false, sortField: { field: 'text', direction: 'asc' } })" wire:model="tecnico_id">
-                                    <option value="" disabled>-- Seleccionar un tecnico --</option>
-                                    @foreach ($tecnicos as $tecnico)
-                                        <option value="{{ $tecnico->id }}">{{ $tecnico->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            @error('tecnico_id')
-                                <span class="text-error">{{ $message }}</span>
-                            @enderror
-                        </label>
+                            <label class="block sm:col-span-6">
+                                <span>Seleccione el tecnico:</span>
+                                <div class="flex justify-between align-middle gap-2">
+                                    <select class="mt-1.5 w-full" x-init="$el._tom = new Tom($el, { create: false, sortField: { field: 'text', direction: 'asc' } })" wire:model="tecnico_id">
+                                        <option value="" disabled>-- Seleccionar un tecnico --</option>
+                                        @foreach ($tecnicos as $tecnico)
+                                            <option value="{{ $tecnico->id }}">{{ $tecnico->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                @error('tecnico_id')
+                                    <span class="text-error">{{ $message }}</span>
+                                @enderror
+                            </label>
                         @endif
                     </div>
                     <div class="grid grid-cols-1 gap-4 sm:grid-cols-12">
@@ -514,14 +514,15 @@
                         @enderror
                         </label>
                         <label class="block sm:col-span-6">
-                            <span> Fecha de entrega</span>
+                            <span> Fecha prometida</span>
                             <span class="relative mt-1.5 flex">
-                                <input wire:model="fecha_entrega"
+                                <input wire:model="fecha_prometida"
                                     class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2  placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                                     type="date" />
                             </span>
+                            @error('fecha_prometida') <span class="text-error">{{ $message }}</span> @enderror
                         </label>
-                        <label class="block sm:col-span-4">
+                        {{-- <label class="block sm:col-span-6">
                             <span>Tipo de orden:</span>
                             <div class="flex justify-between align-middle gap-6">
                                 <select class="mt-1.5 w-full" x-init="$el._tom = new Tom($el, { create: false, sortField: { field: 'text', direction: 'asc' } })" wire:model="orden">
@@ -534,8 +535,24 @@
                                 </select>
                             </div>
                             @error('orden') <span class="text-error">{{ $message }}</span> @enderror
+                        </label> --}}
+                        <label class="block sm:col-span-6">
+                            <span>Tipo de orden:</span>
+                            <div class="flex justify-between align-middle gap-6">
+                                <select class="mt-1.5 w-full" x-init="$el._tom = new Tom($el, { create: false, sortField: { field: 'text', direction: 'asc' } })" wire:model="orden">
+                                    <option value="" disabled>-- Un tipo de orden --</option>
+                                    <option value="Falla de Hardware">Falla de Hardware</option>
+                                    <option value="Falla de Software">Falla de Software</option>
+                                    <option value="Activación de Software">Activación de Software</option>
+                                    <option value="Limpieza de Soft/Hard">Limpieza de Soft/Hard</option>
+                                    <option value="Instalación de SO">Instalación de SO</option>
+                                    <option value="Instalación de Programas">Instalación de Programas</option>
+                                    <option value="Otros">Otros</option>
+                                </select>
+                            </div>
+                            @error('orden') <span class="text-error">{{ $message }}</span> @enderror
                         </label>
-                        <label class="block sm:col-span-4">
+                        <label class="block sm:col-span-6">
                             <span>Estado de la orden:</span>
                             <div class="flex justify-between align-middle gap-6">
                                 <select class="mt-1.5 w-full" x-init="$el._tom = new Tom($el, { create: false, sortField: { field: 'text', direction: 'asc' } })" wire:model="estado">
@@ -548,14 +565,14 @@
                             @error('estado') <span class="text-error">{{ $message }}</span> @enderror
                         </label>
                             </div>
-                        <label class="inline-flex items-center space-x-2">
+                        {{-- <label class="inline-flex items-center space-x-2">
                             <input
                             wire:model="tipo_orden"
                               class="form-checkbox is-basic h-5 w-5 rounded border-slate-400/70 checked:bg-slate-500 checked:border-slate-500 hover:border-slate-500 focus:border-slate-500 dark:border-navy-400 dark:checked:bg-navy-400"
                               type="checkbox"
                             />
                             <p>Marcar si la consulta fue remota</p>
-                          </label>
+                        </label> --}}
                     </div>
 
 

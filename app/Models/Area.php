@@ -12,7 +12,7 @@ class Area extends Model
     use SoftDeletes;
 
     public $timestamps = false;
-    protected $fillable = ['area_name'];
+    protected $fillable = ['area_name', 'secretary_id'];
 
     public function secretary()
     {

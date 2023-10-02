@@ -19,6 +19,7 @@ class OrdenesComponent extends Component
     public function notification($notification)
     {
         $this->dispatchBrowserEvent('notification', ['message' => $notification['message']]);
+        // $this->dispatchBrowserEvent('notification', ['message' => $notification['message'], 'class' => $notification['class'] ]);
     }
 
 

@@ -207,13 +207,21 @@
                                   </span>
                               </label>
                               <label class="block sm:col-span-6">
-                                  <span> Fecha de entrega</span>
-                                  <span class="relative mt-1.5 flex">
-                                      <input wire:model="fecha_entrega"
-                                          class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2  placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                          type="date" disabled/>
-                                  </span>
-                              </label>
+                                    <span> Fecha prometida</span>
+                                    <span class="relative mt-1.5 flex">
+                                        <input wire:model="fecha_prometida"
+                                            class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2  placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
+                                            type="date" disabled/>
+                                    </span>
+                               </label>
+                               <label class="block sm:col-span-6">
+                                <span> Fecha de entrega</span>
+                                <span class="relative mt-1.5 flex">
+                                    <input wire:model="fecha_entrega"
+                                        class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2  placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
+                                        type="date" disabled/>
+                                </span>
+                           </label>
                               <label class="block sm:col-span-6">
                                   <span>Tipo de orden:</span>
                                   <div class="flex justify-between align-middle gap-6">
@@ -221,13 +229,11 @@
                                     placeholder="" wire:model="tipo_orden" type="text"disabled />
                                   </div>
                               </label>
-                              <label class="block sm:col-span-4">
+                              <label class="block sm:col-span-6">
                                   <span>Estado de la orden:</span>
                                   <div class="flex justify-between align-middle gap-6">
                                     <input class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2  placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                                     placeholder="" wire:model="estado" type="text" disabled/>
-
-
                                   </div>
                               </label>
                               <label class="block sm:col-span-6">
@@ -235,19 +241,16 @@
                                   <div class="flex justify-between align-middle gap-6">
                                     <input class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2  placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                                     placeholder="" wire:model="ticket" type="text" disabled/>
-
-
                                   </div>
                               </label>
-                              <label class="block sm:col-span-6">
-
+                              {{-- <label class="block sm:col-span-6">
                                   <p>Cosulta remota</p>
                                   <input
                                   wire:model="consulta"
                                     class="form-checkbox is-basic h-5 w-5 rounded border-slate-400/70 checked:bg-slate-500 checked:border-slate-500 hover:border-slate-500 focus:border-slate-500 dark:border-navy-400 dark:checked:bg-navy-400"
                                     type="checkbox"
                                     disabled/>
-                                </label>
+                              </label> --}}
                           </div>
 
 

@@ -64,18 +64,19 @@ class OrdenesEdit extends Component
             $this->data->update([
                 'device_id'=>$this->type_device_id,
                 'problem'=>$this->falla,
+                'accessories'=>$this->accesorios,
                 'report_customer'=>$this->informe_cliente,
                 'report_technical'=>$this->informe_tecnico,
             ]);
 
-        $this->reset(['type_device_id', 'falla', 'informe_cliente', 'informe_tecnico', 'showModal']);
+        $this->reset(['type_device_id', 'falla', 'accesorios', 'informe_cliente', 'informe_tecnico', 'showModal']);
         $this->resetErrorBag();
         $this->emitTo('ordenes.ordenes-component', 'notification', ['message' => 'Orden editada exitosamente']);
     }
 
 
     public function close() {
-        $this->reset(['type_device_id', 'falla', 'informe_cliente', 'informe_tecnico', 'showModal']);
+        $this->reset(['type_device_id', 'falla', 'accesorios', 'informe_cliente', 'informe_tecnico', 'showModal']);
         $this->resetErrorBag();
     }
 

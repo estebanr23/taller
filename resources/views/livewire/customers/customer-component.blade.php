@@ -76,7 +76,7 @@
                 <td class="whitespace-nowrap px-4 py-3 sm:px-5">{{ $customer->dni }}</td>
                 <td class="whitespace-nowrap px-4 py-3 sm:px-5">{{ $customer->phone }}</td>
                 <td class="whitespace-nowrap px-4 py-3 sm:px-5">{{ $customer->area->area_name }}</td>
-                <td class="whitespace-nowrap px-4 py-3 sm:px-5">{{ $customer->file_number }}</td>
+                <td class="whitespace-nowrap px-4 py-3 sm:px-5">{{ $customer->file_number ? $customer->file_number : '-' }}</td>
                 <td class="whitespace-nowrap px-4 py-3 sm:px-5">
                   @if (is_null($customer->deleted_at))
                     <div class="badge bg-success text-white">Activo</div>

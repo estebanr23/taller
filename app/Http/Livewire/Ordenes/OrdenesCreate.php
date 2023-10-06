@@ -37,11 +37,13 @@ class OrdenesCreate extends Component
     public $orden='';
     public $estado='';
     public $tipo_orden=false;
+
     // Secretarias y Areas
     public $secretary_id = '';
     public $area_id = '';
     public $area_name = '';
     public $showNewAreaInput = false;
+
     // Equipos
     // Tipos
     public $type_name = '';
@@ -55,6 +57,9 @@ class OrdenesCreate extends Component
     public $serial_number='';
     public $device;
 
+    // Orden a crear
+    public $created_order=''; // Taller, Domicilio
+
 
     protected $rulesCliente = [
         'nombre_cliente' => 'required|string',
@@ -65,12 +70,16 @@ class OrdenesCreate extends Component
         'area_id' => 'required',
     ];
 
-    protected $rulesEquipo = [
+    protected $rulesEquipoTaller = [
         'brand_id' => 'required',
         'model_id' => 'required',
         'type_device_id' => 'required',
         'falla'=>'required',
         'accesorios'=>'string|nullable'
+    ];
+
+    protected $rulesEquipoDomicilio = [
+        'falla'=>'required',
     ];
 
     protected $rulesTecnico = [
@@ -102,7 +111,7 @@ class OrdenesCreate extends Component
             'telefono.min' => 'El telefono debe tener al menos 7 caracteres',
             'area_id.required' => 'El area es requerida',
             'fecha_emision'=>'Fecha en la que se crea la orden requerido',
-            'fecha_prometida'=>'Fecha estimada en la que se deberia finalzar la order',
+            'fecha_prometida'=>'Fecha de prometido es requerida',
             'orden.required'=>'Tipo de orden requerido',
             'ticket.required'=>'Tiene que generar un numero de ticket',
             'ticket.unique'=>'El ticket no se puede repetir',
@@ -128,7 +137,25 @@ class OrdenesCreate extends Component
     }
     public function ShowTecnico()
     {
-        $this->validate($this->rulesEquipo);
+        // Si la orden es de "Taller" hacemos la validacion del dispositivo ingresado, si es a "Domicilio" no se requiere dispositivo y no se valida.
+        $this->created_order == 'Taller'
+            ? $this->validate($this->rulesEquipoTaller)
+            : $this->validate($this->rulesEquipoDomicilio);
+        
+        /* protected $rulesEquipoTaller = [
+            'brand_id' => 'required',
+            'model_id' => 'required',
+            'type_device_id' => 'required',
+            'falla'=>'required',
+            'accesorios'=>'string|nullable'
+        ];
+    
+        protected $rulesEquipoDomicilio = [
+            'falla'=>'required',
+        ]; */
+
+        // $this->validate($this->rulesEquipo);
+
         $this->EquipoForm=false;
         $this->TecnicoForm=true;
     }
@@ -191,7 +218,7 @@ class OrdenesCreate extends Component
             $this->tecnico_id=null;
         }
 
-        if(!$this->device)
+        if(!$this->device && $this->created_order == 'Taller')
         {
             $this->device=Device::create([
                 'serial_number'=>$this->serial_number,
@@ -207,7 +234,7 @@ class OrdenesCreate extends Component
             //Crea el ticket y lo guarda
             $ticket =Tickets::create(['description'=>$this->ticket,'customer_id'=>$this->persona->id]);
             $order = Ordenes::create([
-                'device_id'=>$this->device->id,
+                'device_id'=> $this->created_order == 'Taller' ? $this->device->id : null, // Si orden de taller guarda el dispositivo, si es a domicilio queda en null
                 'customer_id'=>$this->persona->id,
                 'receiver_user'=>auth()->user()->id, // El usuario receptor es el usuario logueado
                 'user_id'=>$this->tecnico_id,
@@ -222,7 +249,7 @@ class OrdenesCreate extends Component
                 'type_order'=>$this->orden,
                 'remote_repair'=>$this->tipo_orden,
                 'ticket_id'=>$ticket->id,
-
+                'created_order'=>$this->created_order,
             ]);
         }
         else
@@ -239,7 +266,7 @@ class OrdenesCreate extends Component
 
             $ticket =Tickets::create(['description'=>$this->ticket,'customer_id'=>$nueva_persona->id]);
             $order = Ordenes::create([
-                'device_id'=>$this->type_device_id,
+                'device_id'=>$this->created_order == 'Taller' ? $this->device->id : null, // Si orden de taller guarda el dispositivo, si es a domicilio queda en null
                 'customer_id'=>$nueva_persona->id,
                 'receiver_user'=>Auth::user()->id,
                 'user_id'=>$this->tecnico_id,
@@ -254,7 +281,7 @@ class OrdenesCreate extends Component
                 'type_order'=>$this->orden,
                 'remote_repair'=>$this->tipo_orden,
                 'ticket_id'=>$ticket->id,
-
+                'created_order'=>$this->created_order
             ]);
         }
 
@@ -290,7 +317,7 @@ class OrdenesCreate extends Component
         $this->emitTo('ordenes.ordenes-create', 'notification', ['message' => 'Area registrada exitosamente']);
     }
 
-    //Nuevos Equipos
+    // Nuevos Equipos
 
     // Type Devices
     public function toggleNewTypeInput()

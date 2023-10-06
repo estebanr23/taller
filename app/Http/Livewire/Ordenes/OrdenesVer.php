@@ -14,7 +14,7 @@ class OrdenesVer extends Component
     protected $listeners = ['ver', 'notification'];
 
     public $showModal= false;
-    public $nombre_cliente,$apellido_cliente,$telefono,$DNI,$secretaria_nombre,$area_nombre,$legajo,$falla,$accesorios,$informe_cliente,$informe_tecnico,$fecha_emision,$fecha_prometida,$fecha_entrega,$ticket,$marca,$tipo,$modelo,$tecnico,$tipo_orden;
+    public $nombre_cliente,$apellido_cliente,$telefono,$DNI,$secretaria_nombre,$area_nombre,$legajo,$falla,$accesorios,$informe_cliente,$informe_tecnico,$fecha_emision,$fecha_prometida,$fecha_entrega,$ticket,$marca,$tipo,$modelo,$tecnico,$tipo_orden,$orden_creada;
     public $receptor='';
     public $orden='';
     public $estado='';
@@ -34,9 +34,13 @@ class OrdenesVer extends Component
         $this->secretaria_nombre=$orden->Customer->secretary->secretary_name;
         $this->area_nombre=$orden->Customer->area->area_name;
         $this->legajo=$orden->Customer->file_number;
-        $this->tipo=$orden->Device->typeDevice->type_name;
-        $this->marca=$orden->Device->brand->brand_name;
-        $this->modelo=$orden->Device->model->model_name;
+
+        if ($orden->created_order == 'Taller') {
+            $this->tipo=$orden->Device->typeDevice->type_name;
+            $this->marca=$orden->Device->brand->brand_name;
+            $this->modelo=$orden->Device->model->model_name;
+        }
+
         $this->informe_cliente=$orden->report_customer;
         $this->informe_tecnico=$orden->report_technical;
         $this->falla=$orden->problem;
@@ -48,6 +52,7 @@ class OrdenesVer extends Component
         $this->estado=$orden->State->name;
         $this->ticket=$descripcion->description;
         $this->tipo_orden=$orden->type_order;
+        $this->orden_creada=$orden->created_order;
 
         if($orden->remote_repair==0)
         {
@@ -63,13 +68,10 @@ class OrdenesVer extends Component
         }
     }
 
-
     public function close() {
         $this->reset(['DNI','consulta','nombre_cliente', 'apellido_cliente', 'telefono', 'secretaria_nombre', 'area_nombre','legajo','tipo','marca','modelo','informe_cliente','informe_tecnico','falla', 'accesorios','receptor','fecha_emision','fecha_entrega','estado','ticket','tecnico', 'showModal']);
         $this->resetErrorBag();
     }
-
-
 
     public function render()
     {

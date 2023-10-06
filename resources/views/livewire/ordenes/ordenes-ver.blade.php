@@ -127,39 +127,43 @@
                         <p class="text-base font-medium text-slate-700 dark:text-navy-100">
                             Equipos
                         </p>
-                        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                            <label class="block">
-                              <span>Tipo</span>
-                              <input
-                                  class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2  placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                  placeholder="tipo" wire:model="tipo" type="text" disabled/>
-                          </label>
 
-
-                            <label class="block">
-                                <span>Marca</span>
+                        @if ($orden_creada == 'Taller')
+                            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                <label class="block">
+                                <span>Tipo</span>
                                 <input
                                     class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2  placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                    placeholder="marca" wire:model="marca" type="text" disabled/>
+                                    placeholder="tipo" wire:model="tipo" type="text" disabled/>
                             </label>
-                        </div>
-                        <div class="grid grid-cols-1 gap-4 sm:grid-cols-12">
-                          <label class="block sm:col-span-6">
-                            <span>Modelo</span>
-                            <input
-                                class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2  placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                placeholder="modelo" wire:model="modelo" type="text" disabled/>
-                        </label>
-                            <label class="block sm:col-span-6">
-                                <span>Falla</span>
-                                <input
-                                    class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2  placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                    placeholder="Falla" wire:model="falla" type="text" disabled/>
-                            </label>
-                        </div>
+
+
+                                <label class="block">
+                                    <span>Marca</span>
+                                    <input
+                                        class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2  placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
+                                        placeholder="marca" wire:model="marca" type="text" disabled/>
+                                </label>
+                            </div>
+                            <div class="grid grid-cols-1 gap-4 sm:grid-cols-12">
+                                <label class="block sm:col-span-6">
+                                    <span>Modelo</span>
+                                    <input
+                                        class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2  placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
+                                        placeholder="modelo" wire:model="modelo" type="text" disabled/>
+                                </label>
+                            </div>
+                            <label class="block">
+                                <span>Accesorios</span>
+                                <textarea rows="4" placeholder="" wire:model="accesorios"
+                                    class="form-textarea mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent p-2.5 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
+                                </textarea>
+                            </label>    
+                        @endif
+                        
                         <label class="block">
-                            <span>Accesorios</span>
-                            <textarea rows="4" placeholder="" wire:model="accesorios"
+                            <span>Falla</span>
+                            <textarea rows="4" placeholder="Falla" wire:model="falla"
                                 class="form-textarea mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent p-2.5 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
                             </textarea>
                         </label>
@@ -243,18 +247,17 @@
                                     placeholder="" wire:model="ticket" type="text" disabled/>
                                   </div>
                               </label>
-                              {{-- <label class="block sm:col-span-6">
-                                  <p>Cosulta remota</p>
-                                  <input
-                                  wire:model="consulta"
-                                    class="form-checkbox is-basic h-5 w-5 rounded border-slate-400/70 checked:bg-slate-500 checked:border-slate-500 hover:border-slate-500 focus:border-slate-500 dark:border-navy-400 dark:checked:bg-navy-400"
-                                    type="checkbox"
-                                    disabled/>
-                              </label> --}}
+                              @if ($orden_creada == 'Domicilio')
+                                <label class="block sm:col-span-6">
+                                    <p>Cosulta remota</p>
+                                    <input
+                                        wire:model="consulta"
+                                        class="form-checkbox is-basic h-5 w-5 rounded border-slate-400/70 checked:bg-slate-500 checked:border-slate-500 hover:border-slate-500 focus:border-slate-500 dark:border-navy-400 dark:checked:bg-navy-400"
+                                        type="checkbox"
+                                        disabled/>
+                                </label>
+                              @endif
                           </div>
-
-
-
 
                         <button wire:click="close"
                             class="btn min-w-[7rem] rounded-full border border-slate-300 font-medium text-slate-800 hover:bg-slate-150 focus:bg-slate-150 active:bg-slate-150/80 dark:border-navy-450 dark:text-navy-50 dark:hover:bg-navy-500 dark:focus:bg-navy-500 dark:active:bg-navy-500/90">

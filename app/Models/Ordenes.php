@@ -15,7 +15,7 @@ class Ordenes extends Model
     public $timestamps = false;
 
     protected $fillable = ['id', 'device_id', 'customer_id','receiver_user','user_id','problem', 'accessories','report_customer',
-    'report_technical','date_emission', 'date_promise', 'date_delivery','state_id','type_order','remote_repair','ticket_id'];
+    'report_technical','date_emission', 'date_promise', 'date_delivery','state_id','type_order','remote_repair','ticket_id', 'created_order'];
 
 
     public function Customer()

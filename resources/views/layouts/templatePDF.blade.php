@@ -49,36 +49,40 @@
               </p>
             </div>
           </div>
-          <div class="tm_table tm_style1 tm_mb30">
-            <div class="tm_round_border">
-              <div class="tm_table_responsive">
-                <table>
-                  <thead>
-                    <tr>
-                      <th class="tm_width_3 tm_semi_bold tm_primary_color tm_gray_bg">Información de Equipo</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td class="tm_width_3">
-                        <strong>Tipo de Equipo: </strong> {{ $order->device->typeDevice->type_name }} <br />
-                        <strong>Marca: </strong> {{ $order->device->brand->brand_name }} <br />
-                        <strong>N° Serie: </strong> {{ $order->device->serial_number }} <br />
-                        <strong>Falla: </strong> {{ $order->report_customer }}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+
+          @if ($order->created_order == 'Taller')
+            <div class="tm_table tm_style1 tm_mb30">
+              <div class="tm_round_border">
+                <div class="tm_table_responsive">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th class="tm_width_3 tm_semi_bold tm_primary_color tm_gray_bg">Información de Equipo</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td class="tm_width_3">
+                          <strong>Tipo de Equipo: </strong> {{ $order->device->typeDevice->type_name }} <br />
+                          <strong>Marca: </strong> {{ $order->device->brand->brand_name }} <br />
+                          <strong>N° Serie: </strong> {{ $order->device->serial_number }} <br />
+                          <strong>Falla: </strong> {{ $order->report_customer }}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="tm_padd_15_20 tm_round_border">
-            <p class="tm_mb5"><b class="tm_primary_color">Accesorios:</b></p>
-            <p>{{ $order->accessories }}</p>
-            {{-- <ul class="tm_m0 tm_note_list">
-              <li>No tiene.</li>
-            </ul> --}}
-          </div><!-- .tm_note -->
+            <div class="tm_padd_15_20 tm_round_border">
+              <p class="tm_mb5"><b class="tm_primary_color">Accesorios:</b></p>
+              <p>{{ $order->accessories }}</p>
+              {{-- <ul class="tm_m0 tm_note_list">
+                <li>No tiene.</li>
+              </ul> --}}
+            </div><!-- .tm_note -->
+          @endif
+          
           <br /><br /><br /><br /><br /><br />
           <div class="tm_invoice_footer">
             <div class="tm_left_footer">

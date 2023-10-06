@@ -193,219 +193,230 @@
                 <p class="text-base font-medium text-slate-700 dark:text-navy-100">
                     Equipos
                 </p>
+
                 <div class="mt-4 space-y-4">
-                    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                        <label class=block>
-                            <span>Numero de serie</span>
-                            <div class="flex justify-between align-middle gap-2">
+                    <label class=block>
+                        <span>Crear orden</span>
+                        <div class="flex justify-between align-middle">
 
-
-                            <input
-                            class="mt-1.5 form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2  placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                            placeholder="Ingresar Numero de serie"
-                            type="text"
-                            value="{{ $serial_number }}"
-                            wire:model="serial_number"
-                        />
-
-                        <button
-                            wire:click="Buscar_Serial"
-                            class="btn rounded-l bg-primary font-medium text-white hover:bg-primary-focus focus:bg-primary-focus active:bg-primary-focus/90 dark:bg-accent dark:hover:bg-accent-focus dark:focus:bg-accent-focus dark:active:bg-accent/90">
-                            Buscar
-                        </button>
-                    </div>
-                        </label>
-                    @if (!$showNewTypeInput)
-                    <label class="block">
-                      <span>Tipo:</span>
-                      <div class="flex justify-between align-middle gap-2">
-                        <select
-                          class="mt-1.5 w-full"
-                          x-init="$el._tom = new Tom($el,{create: false,sortField: {field: 'text',direction: 'asc'}})"
-                          wire:model="type_device_id"
+                        <select 
+                            class="mt-1.5 w-full"
+                            x-init="$el._tom = new Tom($el,{create: false,sortField: {field: 'text',direction: 'desc'}})"
+                            wire:model="created_order"
                         >
-                            <option value="" disabled>-- Seleccionar un tipo --</option>
-                          @foreach ($types as $type)
-                            <option value="{{ $type->id }}">{{ $type->type_name }}</option>
-                          @endforeach
+                            <option value="" selected disabled>-- Seleccionar orden --</option>
+                            <option value="Taller">Orden de Taller</option>
+                            <option value="Domicilio" >Orden a Domicilio</option>
                         </select>
-                        <button
-                          class="btn h-9 w-9 mt-1.5 bg-primary p-0 font-medium text-white hover:bg-primary-focus hover:shadow-lg hover:shadow-primary/50 focus:bg-primary-focus focus:shadow-lg focus:shadow-primary/50 active:bg-primary-focus/90"
-                          wire:click="toggleNewTypeInput"
-                          x-tooltip.light="'Ingresar nuevo tipo'"
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                            <path d="M12 5l0 14"></path>
-                            <path d="M5 12l14 0"></path>
-                          </svg>
-                        </button>
-                      </div>
-                      @error('type_device_id') <span class="text-error">{{ $message }}</span> @enderror
-                    </label>
-                    @else
-                    <label class="block">
-                      <span>Tipo Dispositivo:</span>
-                      <div class="flex justify-between align-middle gap-2">
-                        <input wire:model.defer="type_name" class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent" placeholder="Ingrese el nombre para el nuevo tipo de dispositivo" type="text">
-                        <button
-                          class="btn h-9 w-9 mt-1.5 bg-success p-0 font-medium text-white hover:bg-success-focus hover:shadow-lg hover:shadow-success/50 focus:bg-success-focus focus:shadow-lg focus:shadow-success/50 active:bg-success-focus/90"
-                          wire:click="storeNewType"
-                          x-tooltip.light="'Registrar tipo'"
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                            <path d="M5 12l5 5l10 -10"></path>
-                          </svg>
-                        </button>
-                        <button
-                          class="btn h-9 w-9 mt-1.5 bg-error p-0 font-medium text-white hover:bg-error-focus hover:shadow-lg hover:shadow-error/50 focus:bg-error-focus focus:shadow-lg focus:shadow-error/50 active:bg-error-focus/90"
-                          wire:click="toggleNewTypeInput"
-                          x-tooltip.light="'Volver a listado de tipos'"
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-x" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                            <path d="M18 6l-12 12"></path>
-                            <path d="M6 6l12 12"></path>
-                          </svg>
-                        </button>
-                      </div>
-                      @if($errors->has('type_name'))
-                        <span class="text-error">{{ $errors->first('type_name') }}</span>
-                      @endif
-                    </label>
-                    @endif
-
-                    @if (!$showNewBrandInput)
-                    <label class="block">
-                      <span>Marca:</span>
-                      <div class="flex justify-between align-middle gap-2">
-                        <select
-                          class="mt-1.5 w-full"
-                          x-init="$el._tom = new Tom($el,{create: false,sortField: {field: 'text',direction: 'asc'}})"
-                          wire:model="brand_id"
-                        >
-                            <option value="" disabled>-- Seleccionar una marca --</option>
-                          @foreach ($brands as $brand)
-                            <option value="{{ $brand->id }}">{{ $brand->brand_name }}</option>
-                          @endforeach
-                        </select>
-                        <button
-                          class="btn h-9 w-9 mt-1.5 bg-primary p-0 font-medium text-white hover:bg-primary-focus hover:shadow-lg hover:shadow-primary/50 focus:bg-primary-focus focus:shadow-lg focus:shadow-primary/50 active:bg-primary-focus/90"
-                          wire:click="toggleNewBrandInput"
-                          x-tooltip.light="'Ingresar nueva marca'"
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                            <path d="M12 5l0 14"></path>
-                            <path d="M5 12l14 0"></path>
-                          </svg>
-                        </button>
-                      </div>
-                      @error('brand_id') <span class="text-error">{{ $message }}</span> @enderror
-                    </label>
-                    @else
-                    <label class="block">
-                      <span>Marca:</span>
-                      <div class="flex justify-between align-middle gap-2">
-                        <input wire:model.defer="brand_name" class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent" placeholder="Ingrese el nombre para la nueva marca" type="text">
-                        <button
-                          class="btn h-9 w-9 mt-1.5 bg-success p-0 font-medium text-white hover:bg-success-focus hover:shadow-lg hover:shadow-success/50 focus:bg-success-focus focus:shadow-lg focus:shadow-success/50 active:bg-success-focus/90"
-                          wire:click="storeNewBrand"
-                          x-tooltip.light="'Registrar marca'"
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                            <path d="M5 12l5 5l10 -10"></path>
-                          </svg>
-                        </button>
-                        <button
-                          class="btn h-9 w-9 mt-1.5 bg-error p-0 font-medium text-white hover:bg-error-focus hover:shadow-lg hover:shadow-error/50 focus:bg-error-focus focus:shadow-lg focus:shadow-error/50 active:bg-error-focus/90"
-                          wire:click="toggleNewBrandInput"
-                          x-tooltip.light="'Volver a listado de marcas'"
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-x" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                            <path d="M18 6l-12 12"></path>
-                            <path d="M6 6l12 12"></path>
-                          </svg>
-                        </button>
-                      </div>
-                      @if($errors->has('brand_name'))
-                        <span class="text-error">{{ $errors->first('brand_name') }}</span>
-                      @endif
-                    </label>
-                    @endif
-
-                    @if (!$showNewModelInput)
-                    <label class="block">
-                      <span>Modelo:</span>
-                      <div class="flex justify-between align-middle gap-2">
-                        <select
-                          class="mt-1.5 w-full"
-                          x-init="$el._tom = new Tom($el,{create: false,sortField: {field: 'text',direction: 'asc'}})"
-                          wire:model="model_id"
-                        >
-                            <option value="" disabled>-- Seleccionar un modelo --</option>
-                          @foreach ($models as $model)
-                            <option value="{{ $model->id }}">{{ $model->model_name }}</option>
-                          @endforeach
-                        </select>
-                        <button
-                          class="btn h-9 w-9 mt-1.5 bg-primary p-0 font-medium text-white hover:bg-primary-focus hover:shadow-lg hover:shadow-primary/50 focus:bg-primary-focus focus:shadow-lg focus:shadow-primary/50 active:bg-primary-focus/90"
-                          wire:click="toggleNewModelInput"
-                          x-tooltip.light="'Ingresar nuevo modelo'"
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                            <path d="M12 5l0 14"></path>
-                            <path d="M5 12l14 0"></path>
-                          </svg>
-                        </button>
-                      </div>
-                      @error('model_id') <span class="text-error">{{ $message }}</span> @enderror
-                    </label>
-                    @else
-                    <label class="block">
-                      <span>Modelo:</span>
-                      <div class="flex justify-between align-middle gap-2">
-                        <input wire:model.defer="model_name" class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent" placeholder="Ingrese el nombre del nuevo modelo" type="text">
-                        <button
-                          class="btn h-9 w-9 mt-1.5 bg-success p-0 font-medium text-white hover:bg-success-focus hover:shadow-lg hover:shadow-success/50 focus:bg-success-focus focus:shadow-lg focus:shadow-success/50 active:bg-success-focus/90"
-                          wire:click="storeNewModel"
-                          x-tooltip.light="'Registrar modelo'"
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                            <path d="M5 12l5 5l10 -10"></path>
-                          </svg>
-                        </button>
-                        <button
-                          class="btn h-9 w-9 mt-1.5 bg-error p-0 font-medium text-white hover:bg-error-focus hover:shadow-lg hover:shadow-error/50 focus:bg-error-focus focus:shadow-lg focus:shadow-error/50 active:bg-error-focus/90"
-                          wire:click="toggleNewModelInput"
-                          x-tooltip.light="'Volver a listado de modelos'"
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-x" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                            <path d="M18 6l-12 12"></path>
-                            <path d="M6 6l12 12"></path>
-                          </svg>
-                        </button>
-                      </div>
-                      @if($errors->has('model_name'))
-                        <span class="text-error">{{ $errors->first('model_name') }}</span>
-                      @endif
-                    </label>
-                    @endif
-
+                    <label/>
                 </div>
-                    {{-- <label class="block sm:col-span-6">
-                        <span>Falla</span>
-                        <textarea rows="4" placeholder="" wire:model="falla"
-                            class="form-textarea mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent p-2.5 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
-                        </textarea>
-                        @error('falla') <span class="text-error">{{ $message }}</span> @enderror
-                    </label> --}}
+
+                @if ($created_order == 'Taller')
+                    {{-- inicio de Seccion de orden de taller --}}
+
+                    <div class="mt-4 space-y-4">
+                        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                            <label class=block>
+                                <span>Numero de serie</span>
+                                <div class="flex justify-between align-middle gap-2 mt-1.5">
+                                    <input
+                                    class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2  placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
+                                    placeholder="Ingresar Numero de serie"
+                                    type="text"
+                                    value="{{ $serial_number }}"
+                                    wire:model="serial_number"
+                                    />
+
+                                    <button
+                                        wire:click="Buscar_Serial"
+                                        class="btn rounded-l bg-primary font-medium text-white hover:bg-primary-focus focus:bg-primary-focus active:bg-primary-focus/90 dark:bg-accent dark:hover:bg-accent-focus dark:focus:bg-accent-focus dark:active:bg-accent/90">
+                                        Buscar
+                                    </button>
+                                </div>
+                            </label>
+                        @if (!$showNewTypeInput)
+                        <label class="block">
+                        <span>Tipo:</span>
+                        <div class="flex justify-between align-middle gap-2">
+                            <select
+                            class="mt-1.5 w-full"
+                            x-init="$el._tom = new Tom($el,{create: false,sortField: {field: 'text',direction: 'asc'}})"
+                            wire:model="type_device_id"
+                            >
+                                <option value="" disabled>-- Seleccionar un tipo --</option>
+                            @foreach ($types as $type)
+                                <option value="{{ $type->id }}">{{ $type->type_name }}</option>
+                            @endforeach
+                            </select>
+                            <button
+                            class="btn h-9 w-9 mt-1.5 bg-primary p-0 font-medium text-white hover:bg-primary-focus hover:shadow-lg hover:shadow-primary/50 focus:bg-primary-focus focus:shadow-lg focus:shadow-primary/50 active:bg-primary-focus/90"
+                            wire:click="toggleNewTypeInput"
+                            x-tooltip.light="'Ingresar nuevo tipo'"
+                            >
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M12 5l0 14"></path>
+                                <path d="M5 12l14 0"></path>
+                            </svg>
+                            </button>
+                        </div>
+                        @error('type_device_id') <span class="text-error">{{ $message }}</span> @enderror
+                        </label>
+                        @else
+                        <label class="block">
+                        <span>Tipo Dispositivo:</span>
+                        <div class="flex justify-between align-middle gap-2">
+                            <input wire:model.defer="type_name" class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent" placeholder="Ingrese el nombre para el nuevo tipo de dispositivo" type="text">
+                            <button
+                            class="btn h-9 w-9 mt-1.5 bg-success p-0 font-medium text-white hover:bg-success-focus hover:shadow-lg hover:shadow-success/50 focus:bg-success-focus focus:shadow-lg focus:shadow-success/50 active:bg-success-focus/90"
+                            wire:click="storeNewType"
+                            x-tooltip.light="'Registrar tipo'"
+                            >
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M5 12l5 5l10 -10"></path>
+                            </svg>
+                            </button>
+                            <button
+                            class="btn h-9 w-9 mt-1.5 bg-error p-0 font-medium text-white hover:bg-error-focus hover:shadow-lg hover:shadow-error/50 focus:bg-error-focus focus:shadow-lg focus:shadow-error/50 active:bg-error-focus/90"
+                            wire:click="toggleNewTypeInput"
+                            x-tooltip.light="'Volver a listado de tipos'"
+                            >
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-x" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M18 6l-12 12"></path>
+                                <path d="M6 6l12 12"></path>
+                            </svg>
+                            </button>
+                        </div>
+                        @if($errors->has('type_name'))
+                            <span class="text-error">{{ $errors->first('type_name') }}</span>
+                        @endif
+                        </label>
+                        @endif
+
+                        @if (!$showNewBrandInput)
+                        <label class="block">
+                        <span>Marca:</span>
+                        <div class="flex justify-between align-middle gap-2">
+                            <select
+                            class="mt-1.5 w-full"
+                            x-init="$el._tom = new Tom($el,{create: false,sortField: {field: 'text',direction: 'asc'}})"
+                            wire:model="brand_id"
+                            >
+                                <option value="" disabled>-- Seleccionar una marca --</option>
+                            @foreach ($brands as $brand)
+                                <option value="{{ $brand->id }}">{{ $brand->brand_name }}</option>
+                            @endforeach
+                            </select>
+                            <button
+                            class="btn h-9 w-9 mt-1.5 bg-primary p-0 font-medium text-white hover:bg-primary-focus hover:shadow-lg hover:shadow-primary/50 focus:bg-primary-focus focus:shadow-lg focus:shadow-primary/50 active:bg-primary-focus/90"
+                            wire:click="toggleNewBrandInput"
+                            x-tooltip.light="'Ingresar nueva marca'"
+                            >
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M12 5l0 14"></path>
+                                <path d="M5 12l14 0"></path>
+                            </svg>
+                            </button>
+                        </div>
+                        @error('brand_id') <span class="text-error">{{ $message }}</span> @enderror
+                        </label>
+                        @else
+                        <label class="block">
+                        <span>Marca:</span>
+                        <div class="flex justify-between align-middle gap-2">
+                            <input wire:model.defer="brand_name" class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent" placeholder="Ingrese el nombre para la nueva marca" type="text">
+                            <button
+                            class="btn h-9 w-9 mt-1.5 bg-success p-0 font-medium text-white hover:bg-success-focus hover:shadow-lg hover:shadow-success/50 focus:bg-success-focus focus:shadow-lg focus:shadow-success/50 active:bg-success-focus/90"
+                            wire:click="storeNewBrand"
+                            x-tooltip.light="'Registrar marca'"
+                            >
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M5 12l5 5l10 -10"></path>
+                            </svg>
+                            </button>
+                            <button
+                            class="btn h-9 w-9 mt-1.5 bg-error p-0 font-medium text-white hover:bg-error-focus hover:shadow-lg hover:shadow-error/50 focus:bg-error-focus focus:shadow-lg focus:shadow-error/50 active:bg-error-focus/90"
+                            wire:click="toggleNewBrandInput"
+                            x-tooltip.light="'Volver a listado de marcas'"
+                            >
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-x" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M18 6l-12 12"></path>
+                                <path d="M6 6l12 12"></path>
+                            </svg>
+                            </button>
+                        </div>
+                        @if($errors->has('brand_name'))
+                            <span class="text-error">{{ $errors->first('brand_name') }}</span>
+                        @endif
+                        </label>
+                        @endif
+
+                        @if (!$showNewModelInput)
+                        <label class="block">
+                        <span>Modelo:</span>
+                        <div class="flex justify-between align-middle gap-2">
+                            <select
+                            class="mt-1.5 w-full"
+                            x-init="$el._tom = new Tom($el,{create: false,sortField: {field: 'text',direction: 'asc'}})"
+                            wire:model="model_id"
+                            >
+                                <option value="" disabled>-- Seleccionar un modelo --</option>
+                            @foreach ($models as $model)
+                                <option value="{{ $model->id }}">{{ $model->model_name }}</option>
+                            @endforeach
+                            </select>
+                            <button
+                            class="btn h-9 w-9 mt-1.5 bg-primary p-0 font-medium text-white hover:bg-primary-focus hover:shadow-lg hover:shadow-primary/50 focus:bg-primary-focus focus:shadow-lg focus:shadow-primary/50 active:bg-primary-focus/90"
+                            wire:click="toggleNewModelInput"
+                            x-tooltip.light="'Ingresar nuevo modelo'"
+                            >
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M12 5l0 14"></path>
+                                <path d="M5 12l14 0"></path>
+                            </svg>
+                            </button>
+                        </div>
+                        @error('model_id') <span class="text-error">{{ $message }}</span> @enderror
+                        </label>
+                        @else
+                        <label class="block">
+                        <span>Modelo:</span>
+                        <div class="flex justify-between align-middle gap-2">
+                            <input wire:model.defer="model_name" class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent" placeholder="Ingrese el nombre del nuevo modelo" type="text">
+                            <button
+                            class="btn h-9 w-9 mt-1.5 bg-success p-0 font-medium text-white hover:bg-success-focus hover:shadow-lg hover:shadow-success/50 focus:bg-success-focus focus:shadow-lg focus:shadow-success/50 active:bg-success-focus/90"
+                            wire:click="storeNewModel"
+                            x-tooltip.light="'Registrar modelo'"
+                            >
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M5 12l5 5l10 -10"></path>
+                            </svg>
+                            </button>
+                            <button
+                            class="btn h-9 w-9 mt-1.5 bg-error p-0 font-medium text-white hover:bg-error-focus hover:shadow-lg hover:shadow-error/50 focus:bg-error-focus focus:shadow-lg focus:shadow-error/50 active:bg-error-focus/90"
+                            wire:click="toggleNewModelInput"
+                            x-tooltip.light="'Volver a listado de modelos'"
+                            >
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-x" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M18 6l-12 12"></path>
+                                <path d="M6 6l12 12"></path>
+                            </svg>
+                            </button>
+                        </div>
+                        @if($errors->has('model_name'))
+                            <span class="text-error">{{ $errors->first('model_name') }}</span>
+                        @endif
+                        </label>
+                        @endif
+                    </div>
 
                     <label class="block">
                         <span>Falla</span>
@@ -414,20 +425,6 @@
                         </textarea>
                         @error('falla') <span class="text-error">{{ $message }}</span> @enderror
                     </label>
-
-                    {{-- <label class="block">
-                        <span>Informe cliente</span>
-                        <textarea rows="4" placeholder="" wire:model="informe_cliente"
-                            class="form-textarea mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent p-2.5 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
-                        </textarea>
-                        @error('informe_cliente') <span class="text-error">{{ $message }}</span> @enderror
-                    </label>
-                    <label class="block">
-                        <span>Informe Tecnico</span>
-                        <textarea rows="4" placeholder="" wire:model="informe_tecnico"
-                            class="form-textarea mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent p-2.5 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
-                        </textarea>
-                    </label> --}}
 
                     <label class="block">
                         <span>Accesorios</span>
@@ -436,6 +433,31 @@
                         </textarea>
                         @error('accesorios') <span class="text-error">{{ $message }}</span> @enderror
                     </label>
+
+                    {{-- fin de Seccion de orden de taller --}}
+                @else
+                    @if ($created_order == 'Domicilio')
+
+                        <label class="block mt-1.5">
+                            <span>Falla</span>
+                            <textarea rows="4" placeholder="" wire:model="falla"
+                                class="form-textarea mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent p-2.5 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
+                            </textarea>
+                            @error('falla') <span class="text-error">{{ $message }}</span> @enderror
+                        </label>
+
+                    @else
+                        <span class="flex mt-1.5 items-end text-center text-amber-400 gap-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-info-triangle" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z"></path>
+                                <path d="M12 9h.01"></path>
+                                <path d="M11 12h1v4h1"></path>
+                             </svg>
+                            Seleccione la orden que desea crear
+                        </span>
+                    @endif
+                @endif
 
                     <div class="flex justify-end space-x-2">
                         <button wire:click="ShowCliente"
@@ -522,20 +544,7 @@
                             </span>
                             @error('fecha_prometida') <span class="text-error">{{ $message }}</span> @enderror
                         </label>
-                        {{-- <label class="block sm:col-span-6">
-                            <span>Tipo de orden:</span>
-                            <div class="flex justify-between align-middle gap-6">
-                                <select class="mt-1.5 w-full" x-init="$el._tom = new Tom($el, { create: false, sortField: { field: 'text', direction: 'asc' } })" wire:model="orden">
-                                    <option value="" disabled>-- Un tipo de orden --</option>
-                                    <option value="Instalacion/activacion">Instalacion/activacion</option>
-                                    <option value="Internet/redes">Internet/redes</option>
-                                    <option value="impresoras">impresoras</option>
-                                    <option value="Encendido de Pc">Encendido de Pc</option>
-                                    <option value="Arranque de S.O">Arranque de S.O</option>
-                                </select>
-                            </div>
-                            @error('orden') <span class="text-error">{{ $message }}</span> @enderror
-                        </label> --}}
+
                         <label class="block sm:col-span-6">
                             <span>Tipo de orden:</span>
                             <div class="flex justify-between align-middle gap-6">
@@ -564,17 +573,20 @@
                             </div>
                             @error('estado') <span class="text-error">{{ $message }}</span> @enderror
                         </label>
-                            </div>
-                        {{-- <label class="inline-flex items-center space-x-2">
-                            <input
-                            wire:model="tipo_orden"
-                              class="form-checkbox is-basic h-5 w-5 rounded border-slate-400/70 checked:bg-slate-500 checked:border-slate-500 hover:border-slate-500 focus:border-slate-500 dark:border-navy-400 dark:checked:bg-navy-400"
-                              type="checkbox"
-                            />
-                            <p>Marcar si la consulta fue remota</p>
-                        </label> --}}
-                    </div>
 
+                        @if ($created_order == 'Domicilio')
+                            <label class="block sm:col-span-6">
+                                <p>Cosulta remota</p>
+                                <input
+                                    wire:model="tipo_orden"
+                                    class="form-checkbox is-basic h-5 w-5 rounded border-slate-400/70 checked:bg-slate-500 checked:border-slate-500 hover:border-slate-500 focus:border-slate-500 dark:border-navy-400 dark:checked:bg-navy-400"
+                                    type="checkbox"
+                                />
+                            </label>
+                        @endif
+
+                    </div>
+                    </div>
 
                     <div class="flex justify-end space-x-2 mt-2">
                         <button wire:click="ShowEquipo"
@@ -588,9 +600,9 @@
                             <span>Anterior</span>
                         </button>
                         <button
-                        wire:click="Guardar" class="btn space-x-2 bg-primary font-medium text-white hover:bg-primary-focus focus:bg-primary-focus active:bg-primary-focus/90 dark:bg-accent dark:hover:bg-accent-focus dark:focus:bg-accent-focus dark:active:bg-accent/90">
+                            wire:click="Guardar" class="btn space-x-2 bg-primary font-medium text-white hover:bg-primary-focus focus:bg-primary-focus active:bg-primary-focus/90 dark:bg-accent dark:hover:bg-accent-focus dark:focus:bg-accent-focus dark:active:bg-accent/90"
+                        >
                             <span>Guardar</span>
-
                         </button>
                     </div>
                 </div>

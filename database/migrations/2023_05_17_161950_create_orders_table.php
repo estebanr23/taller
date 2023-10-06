@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('device_id')->constrained();
+            $table->foreignId('device_id')->nullable()->constrained(); /** Campo null */
             $table->foreignId('customer_id')->constrained();
             $table->string('receiver_user'); // Usuario receptor
             $table->foreignId('user_id')->nullable(); // Usuario tecnico
@@ -25,9 +25,10 @@ return new class extends Migration
             $table->date('date_promise'); // Fecha prometida
             $table->date('date_delivery')->nullable();
             $table->foreignId('state_id')->constrained();
-            $table->string('type_order');
-            $table->string('remote_repair');
+            $table->string('type_order')->nullable(); /** Campo null */
+            $table->boolean('remote_repair');
             $table->foreignId('ticket_id')->constrained();
+            $table->enum('created_order', ['Taller', 'Domicilio']); // Orden de taller o domicilio
             $table->softDeletes();
         });
     }

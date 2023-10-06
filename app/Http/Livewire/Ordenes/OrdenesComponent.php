@@ -15,6 +15,7 @@ class OrdenesComponent extends Component
     protected $listeners = ['render', 'notification'];
     public $search = '';
     public int $pages = 10;
+    public $created_order = 'Taller';
 
     public function notification($notification)
     {
@@ -38,7 +39,11 @@ class OrdenesComponent extends Component
     {
 
         return view('livewire.ordenes.ordenes-component', [
-            'ordenes' => Ordenes::withTrashed()->where('id', 'like', '%'.$this->search.'%')->orderBy('date_emission', 'desc')->paginate($this->pages),
+            'ordenes' => Ordenes::withTrashed()
+                                    ->where('id', 'like', '%'.$this->search.'%')
+                                    ->where('created_order', $this->created_order)
+                                    ->orderBy('date_emission', 'desc')
+                                    ->paginate($this->pages),
             'user'=>Auth::user(),
     ]);
     }

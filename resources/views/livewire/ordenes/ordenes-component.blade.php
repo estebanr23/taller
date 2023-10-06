@@ -8,10 +8,15 @@
                 >
                     Listado de Órdenes
                 </h2>
+
+                <select class="w-72" x-init="$el._tom = new Tom($el, { create: false, sortField: { field: 'text', direction: 'desc' } })" wire:model="created_order">
+                    <option value="Taller" selected>Orden de Taller</option>
+                    <option value="Domicilio" >Orden a Domicilio</option>
+                </select>
+
                 <div class="flex gap-2">
                     {{-- Buscador --}}
                     @include('commons.search')
-
 
                     <div class="inline-flex">
                         {{--  Orden --}}

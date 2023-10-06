@@ -16,7 +16,7 @@ class OrdenesEdit extends Component
 
     public $showModal= false;
 
-    public $falla,$accesorios,$informe_cliente,$informe_tecnico,$data;
+    public $falla,$accesorios,$informe_cliente,$informe_tecnico,$remota,$data,$created_order;
     public $type_device_id='';
     public $brand_id='';
     public $model_id = '';
@@ -26,23 +26,40 @@ class OrdenesEdit extends Component
     {
         $this->data=$orden;
         $equipo=Device::where('id',$orden->device_id)->first();
+
         $this->showModal = true;
-        $this->type_device_id=$orden->device_id;
-        $this->brand_id=$equipo->brand_id;
-        $this->model_id=$equipo->model_id;
         $this->falla=$orden->problem;
-        $this->accesorios=$orden->accessories;
         $this->informe_cliente=$orden->report_customer;
         $this->informe_tecnico=$orden->report_technical;
+        $this->remota=$orden->remote_repair; //(int)
+        $this->created_order=$orden->created_order;
+
+        if ($orden->created_order == 'Taller') {
+            $this->type_device_id=$orden->device_id;
+            $this->brand_id=$equipo->brand_id;
+            $this->model_id=$equipo->model_id;
+            $this->accesorios=$orden->accessories;
+        }
     }
 
-
-    protected $rulesEquipo = [
+    /* protected $rulesEquipo = [
         'brand_id' => 'required',
         'model_id' => 'required',
         'type_device_id' => 'required',
         'falla'=>'required',
         'informe_cliente'=>'required'
+    ]; */
+
+    protected $rulesEquipoTaller = [
+        'brand_id' => 'required',
+        'model_id' => 'required',
+        'type_device_id' => 'required',
+        'falla'=>'required',
+        'accesorios'=>'string|nullable'
+    ];
+
+    protected $rulesEquipoDomicilio = [
+        'falla'=>'required',
     ];
 
     protected function messages()
@@ -58,9 +75,15 @@ class OrdenesEdit extends Component
 
     public function update()
     {
-            $this->validate($this->rulesEquipo);
+        // $this->validate($this->rulesEquipo);
+        /* $this->created_order == 'Taller'
+            ? $this->validate($this->rulesEquipoTaller)
+            : $this->validate($this->rulesEquipoDomicilio); */
 
 
+        if ($this->created_order == 'Taller') {
+
+            $this->validate($this->rulesEquipoTaller);
             $this->data->update([
                 'device_id'=>$this->type_device_id,
                 'problem'=>$this->falla,
@@ -69,18 +92,36 @@ class OrdenesEdit extends Component
                 'report_technical'=>$this->informe_tecnico,
             ]);
 
-        $this->reset(['type_device_id', 'falla', 'accesorios', 'informe_cliente', 'informe_tecnico', 'showModal']);
+        } else {
+
+            $this->validate($this->rulesEquipoDomicilio);
+            $this->data->update([
+                'problem'=>$this->falla,
+                'report_customer'=>$this->informe_cliente,
+                'report_technical'=>$this->informe_tecnico,
+                'remote_repair'=>$this->remota,
+            ]);
+
+        }
+        
+        /* $this->data->update([
+            'device_id'=>$this->type_device_id,
+            'problem'=>$this->falla,
+            'accessories'=>$this->accesorios,
+            'report_customer'=>$this->informe_cliente,
+            'report_technical'=>$this->informe_tecnico,
+        ]); */
+
+        $this->reset(['type_device_id', 'falla', 'accesorios', 'informe_cliente', 'informe_tecnico', 'remota', 'showModal']);
         $this->resetErrorBag();
         $this->emitTo('ordenes.ordenes-component', 'notification', ['message' => 'Orden editada exitosamente']);
     }
 
 
     public function close() {
-        $this->reset(['type_device_id', 'falla', 'accesorios', 'informe_cliente', 'informe_tecnico', 'showModal']);
+        $this->reset(['type_device_id', 'falla', 'accesorios', 'informe_cliente', 'informe_tecnico', 'remota', 'showModal']);
         $this->resetErrorBag();
     }
-
-
 
     public function render()
     {

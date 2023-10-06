@@ -27,64 +27,68 @@
                         <p class="text-base font-medium text-slate-700 dark:text-navy-100">
                             Equipos
                         </p>
-                        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                            <label class="block">
-                                <span>Tipo:</span>
-                                <div class="flex justify-between align-middle gap-2">
-                                    <select class="mt-1.5 w-full" x-init="$el._tom = new Tom($el, { create: false, sortField: { field: 'text', direction: 'asc' } })" wire:model="type_device_id">
-                                        <option value="" disabled>-- Seleccionar un tipo --</option>
-                                        @foreach ($types as $type)
-                                            <option value="{{ $type->id }}">{{ $type->type_name }}</option>
+
+                        @if ($created_order == 'Taller')
+                            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                <label class="block">
+                                    <span>Tipo:</span>
+                                    <div class="flex justify-between align-middle gap-2">
+                                        <select class="mt-1.5 w-full" x-init="$el._tom = new Tom($el, { create: false, sortField: { field: 'text', direction: 'asc' } })" wire:model="type_device_id">
+                                            <option value="" disabled>-- Seleccionar un tipo --</option>
+                                            @foreach ($types as $type)
+                                                <option value="{{ $type->id }}">{{ $type->type_name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    @error('type_device_id')
+                                        <span class="text-error">{{ $message }}</span>
+                                    @enderror
+                                </label>
+                                <label class="block">
+                                    <span>Marca:</span>
+                                    <select class="mt-1.5 w-full" x-init="$el._tom = new Tom($el, { create: false, sortField: { field: 'text', direction: 'asc' } })" wire:model="brand_id">
+                                        <option value="" disabled>-- Seleccionar una marca --</option>
+                                        @foreach ($brands as $brand)
+                                            <option value="{{ $brand->id }}">{{ $brand->brand_name }}</option>
                                         @endforeach
                                     </select>
-                                </div>
-                                @error('type_device_id')
-                                    <span class="text-error">{{ $message }}</span>
-                                @enderror
-                            </label>
+                                    @error('brand_id')
+                                        <span class="text-error">{{ $message }}</span>
+                                    @enderror
+                                </label>
+                            </div>
+                            <div class="grid grid-cols-1 gap-4 sm:grid-cols-12">
+                                <label class="block sm:col-span-6">
+                                    <span>Modelo:</span>
+                                    <div class="flex justify-between align-middle gap-2">
+                                        <select class="mt-1.5 w-full" x-init="$el._tom = new Tom($el, { create: false, sortField: { field: 'text', direction: 'asc' } })" wire:model="model_id">
+                                            <option value="" disabled>-- Seleccionar un modelo --</option>
+                                            @foreach ($models as $model)
+                                                <option value="{{ $model->id }}">{{ $model->model_name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    @error('model_id')
+                                        <span class="text-error">{{ $message }}</span>
+                                    @enderror
+                                </label>
+                            </div>
                             <label class="block">
-                                <span>Marca:</span>
-                                <select class="mt-1.5 w-full" x-init="$el._tom = new Tom($el, { create: false, sortField: { field: 'text', direction: 'asc' } })" wire:model="brand_id">
-                                    <option value="" disabled>-- Seleccionar una marca --</option>
-                                    @foreach ($brands as $brand)
-                                        <option value="{{ $brand->id }}">{{ $brand->brand_name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('brand_id')
-                                    <span class="text-error">{{ $message }}</span>
-                                @enderror
+                                <span>Accesorios</span>
+                                <textarea rows="4" placeholder="" wire:model="accesorios"
+                                    class="form-textarea mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent p-2.5 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"></textarea>
                             </label>
-                        </div>
-                        <div class="grid grid-cols-1 gap-4 sm:grid-cols-12">
-                            <label class="block sm:col-span-6">
-                                <span>Modelo:</span>
-                                <div class="flex justify-between align-middle gap-2">
-                                    <select class="mt-1.5 w-full" x-init="$el._tom = new Tom($el, { create: false, sortField: { field: 'text', direction: 'asc' } })" wire:model="model_id">
-                                        <option value="" disabled>-- Seleccionar un modelo --</option>
-                                        @foreach ($models as $model)
-                                            <option value="{{ $model->id }}">{{ $model->model_name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                @error('model_id')
-                                    <span class="text-error">{{ $message }}</span>
-                                @enderror
-                            </label>
-                            <label class="block sm:col-span-6">
-                                <span>Falla</span>
-                                <input
-                                    class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2  placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                    placeholder="Falla" wire:model="falla" type="text" />
-                                @error('falla')
-                                    <span class="text-error">{{ $message }}</span>
-                                @enderror
-                            </label>
-                        </div>
+                        @endif 
+
                         <label class="block">
-                            <span>Accesorios</span>
-                            <textarea rows="4" placeholder="" wire:model="accesorios"
+                            <span>Falla</span>
+                            <textarea rows="4" placeholder="Falla" wire:model="falla"
                                 class="form-textarea mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent p-2.5 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"></textarea>
+                            @error('falla')
+                                <span class="text-error">{{ $message }}</span>
+                            @enderror
                         </label>
+                        
                         <label class="block">
                             <span>Informe cliente</span>
                             <textarea rows="4" placeholder="" wire:model="informe_cliente"
@@ -98,6 +102,17 @@
                             <textarea rows="4" placeholder="" wire:model="informe_tecnico"
                                 class="form-textarea mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent p-2.5 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"></textarea>
                         </label>
+
+                        @if ($created_order == 'Domicilio')
+                            <label class="block sm:col-span-6">
+                                <p>Cosulta remota</p>
+                                <input
+                                    wire:model="remota"
+                                    class="form-checkbox is-basic h-5 w-5 rounded border-slate-400/70 checked:bg-slate-500 checked:border-slate-500 hover:border-slate-500 focus:border-slate-500 dark:border-navy-400 dark:checked:bg-navy-400"
+                                    type="checkbox"
+                                />
+                            </label>
+                        @endif
 
                         <button wire:click="close"
                             class="btn min-w-[7rem] rounded-full border border-slate-300 font-medium text-slate-800 hover:bg-slate-150 focus:bg-slate-150 active:bg-slate-150/80 dark:border-navy-450 dark:text-navy-50 dark:hover:bg-navy-500 dark:focus:bg-navy-500 dark:active:bg-navy-500/90">

@@ -18,6 +18,7 @@ use App\Models\Secretary;
 use Illuminate\Support\Str;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class OrdenesCreate extends Component
 {
@@ -285,11 +286,35 @@ class OrdenesCreate extends Component
             ]);
         }
 
-        $this->emitTo('ordenes.ordenes-component', 'notification', ['message' => 'Orden actualizada exitosamente']);
-        redirect()->route('ordenes.index');
-        return $this->exportPDF($order);
-    }
+        // Realizo la consulta con los datos necesarios para generar el pdf
+        $order_json = DB::table('orders')
+                    ->where('orders.id', $order->id)
+                    ->join('customers', 'orders.customer_id', '=', 'customers.id')
+                    ->join('devices', 'orders.device_id', '=', 'devices.id')
+                    ->join('users', 'orders.user_id', '=', 'users.id')
+                    ->join('areas', 'customers.area_id', '=', 'areas.id')
+                    ->join('secretaries', 'areas.secretary_id', '=', 'secretaries.id')
+                    ->join('type_devices', 'devices.type_device_id', '=', 'type_devices.id')
+                    ->join('brands', 'devices.brand_id', '=', 'brands.id')
+                    ->join('models', 'devices.model_id', '=', 'models.id')
+                    ->select('orders.id', 'orders.problem', 'orders.accessories', 'orders.date_emission', 'orders.date_promise', 
+                            'customers.name', 'customers.lastname', 'areas.area_name', 'secretaries.secretary_name',
+                            'devices.serial_number', 'brands.brand_name', 'models.model_name',
+                            'users.name as technical_user')
+                    ->get();
 
+        $receiver_user = User::where('id', $order->receiver_user)->first();
+
+        // Formateo los datos para enviar a la vista
+        $data = $order_json[0];
+        $data->receiver_user = $receiver_user->name;
+
+        $this->emit('exportOrden', ['order' => $data]);
+        $this->emitTo('ordenes.ordenes-component', 'notification', ['message' => 'Orden actualizada exitosamente']);
+        // redirect()->route('ordenes.index');
+        // return $this->exportPDF($order);
+    }
+    
     // Areas
     public function toggleNewAreaInput()
     {

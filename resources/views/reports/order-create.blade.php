@@ -13,6 +13,6 @@
 
 <body>
   @include('layouts.templatePDF')
-  {{-- @include('layouts.templatePDF') --}}
+  @include('layouts.templatePDF')
 </body>
 </html>

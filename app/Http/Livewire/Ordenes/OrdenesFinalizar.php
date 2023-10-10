@@ -5,7 +5,9 @@ namespace App\Http\Livewire\Ordenes;
 use Livewire\Component;
 use App\Models\State;
 use App\Models\Ordenes;
+use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\DB;
 
 class OrdenesFinalizar extends Component
 {
@@ -72,9 +74,36 @@ class OrdenesFinalizar extends Component
     }
 
     // Export PDF
-    public function exportPDF(Ordenes $order) {
+    /* public function exportPDF(Ordenes $order) {
         $pdf = Pdf::loadView('reports.order-completed', ['order' => $order])->output();
         return response()->streamDownload(fn() => print($pdf), 'export.pdf');
+    } */
+
+    public function exportPDF(Ordenes $order) {
+
+        $order_json = DB::table('orders')
+                    ->where('orders.id', $order->id)
+                    ->join('customers', 'orders.customer_id', '=', 'customers.id')
+                    ->join('devices', 'orders.device_id', '=', 'devices.id')
+                    ->join('users', 'orders.user_id', '=', 'users.id')
+                    ->join('areas', 'customers.area_id', '=', 'areas.id')
+                    ->join('secretaries', 'areas.secretary_id', '=', 'secretaries.id')
+                    ->join('type_devices', 'devices.type_device_id', '=', 'type_devices.id')
+                    ->join('brands', 'devices.brand_id', '=', 'brands.id')
+                    ->join('models', 'devices.model_id', '=', 'models.id')
+                    ->select('orders.id', 'orders.problem', 'orders.accessories', 'orders.date_emission', 'orders.date_promise',
+                            'customers.name', 'customers.lastname', 'areas.area_name', 'secretaries.secretary_name', 'customers.phone',
+                            'devices.serial_number', 'type_devices.type_name', 'brands.brand_name', 'models.model_name',
+                            'users.name as technical_user')
+                    ->get();
+
+        $receiver_user = User::where('id', $order->receiver_user)->first();
+
+        // Formateo los datos para enviar a la vista
+        $data = $order_json[0];
+        $data->receiver_user = $receiver_user->name;
+
+        $this->emit('exportOrden', ['order' => $data]);
     }
 
     public function close() {

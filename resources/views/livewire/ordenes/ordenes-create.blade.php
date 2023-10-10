@@ -708,7 +708,7 @@
     </div>
 </div>
 
-@push('js')
+{{-- @push('js')
     <script>
 
         Livewire.on('exportOrden', async(order) => {
@@ -749,4 +749,4 @@
         });
 
     </script>
-@endpush
+@endpush --}}

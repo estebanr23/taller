@@ -311,10 +311,11 @@ class OrdenesCreate extends Component
 
         $this->emit('exportOrden', ['order' => $data]);
         $this->emitTo('ordenes.ordenes-component', 'notification', ['message' => 'Orden actualizada exitosamente']);
+        
         // redirect()->route('ordenes.index');
         // return $this->exportPDF($order);
     }
-    
+
     // Areas
     public function toggleNewAreaInput()
     {

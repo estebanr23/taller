@@ -79,8 +79,38 @@
         <script>
           window.addEventListener("DOMContentLoaded", () => Alpine.start());
         </script>
-        
+
         @livewireScripts
+
+        <script>
+          Livewire.on('exportOrden', async(order) => {
+              const data = {
+                  convertTo: "pdf",
+                  data: order.order,
+                  template: "orden_taller.docx"
+              }
+
+              const response = await fetch('https://reportes.cc.gob.ar/carbone', {
+                  method: 'POST',
+                  headers: {
+                      "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify(data),
+              });
+
+              if (!response.ok) {
+                  throw new Error(`HTTP error! status: ${response.status}`);
+              }
+
+              const fileBlob = await response.blob();
+              const file = new Blob([fileBlob], {type: 'application/pdf'});
+              const fileURL = URL.createObjectURL(file);
+              window.open(fileURL, '_blank');
+
+              window.location.href = "{{ route('ordenes.index') }}";
+          });
+        </script>
+
         @stack('js')
       </body>
 </html>

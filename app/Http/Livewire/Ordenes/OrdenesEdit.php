@@ -8,6 +8,7 @@ use App\Models\TypeDevice;
 use App\Models\ModelDevice;
 use App\Models\Ordenes;
 use App\Models\Device;
+use App\Models\State;
 
 class OrdenesEdit extends Component
 {
@@ -16,7 +17,7 @@ class OrdenesEdit extends Component
 
     public $showModal= false;
 
-    public $falla,$accesorios,$informe_cliente,$informe_tecnico,$remota,$data,$created_order;
+    public $falla,$accesorios,$informe_cliente,$informe_tecnico,$remota,$data,$created_order,$estado;
     public $type_device_id='';
     public $brand_id='';
     public $model_id = '';
@@ -33,6 +34,7 @@ class OrdenesEdit extends Component
         $this->informe_tecnico=$orden->report_technical;
         $this->remota=$orden->remote_repair; //(int)
         $this->created_order=$orden->created_order;
+        $this->estado=$orden->state_id;
 
         if ($orden->created_order == 'Taller') {
             $this->type_device_id=$orden->device_id;
@@ -75,11 +77,6 @@ class OrdenesEdit extends Component
 
     public function update()
     {
-        // $this->validate($this->rulesEquipo);
-        /* $this->created_order == 'Taller'
-            ? $this->validate($this->rulesEquipoTaller)
-            : $this->validate($this->rulesEquipoDomicilio); */
-
 
         if ($this->created_order == 'Taller') {
 
@@ -90,6 +87,7 @@ class OrdenesEdit extends Component
                 'accessories'=>$this->accesorios,
                 'report_customer'=>$this->informe_cliente,
                 'report_technical'=>$this->informe_tecnico,
+                'state_id'=>$this->estado,
             ]);
 
         } else {
@@ -100,32 +98,26 @@ class OrdenesEdit extends Component
                 'report_customer'=>$this->informe_cliente,
                 'report_technical'=>$this->informe_tecnico,
                 'remote_repair'=>$this->remota,
+                'state_id'=>$this->estado,
             ]);
 
         }
-        
-        /* $this->data->update([
-            'device_id'=>$this->type_device_id,
-            'problem'=>$this->falla,
-            'accessories'=>$this->accesorios,
-            'report_customer'=>$this->informe_cliente,
-            'report_technical'=>$this->informe_tecnico,
-        ]); */
 
-        $this->reset(['type_device_id', 'falla', 'accesorios', 'informe_cliente', 'informe_tecnico', 'remota', 'showModal']);
+        $this->reset(['type_device_id', 'falla', 'accesorios', 'informe_cliente', 'informe_tecnico', 'remota', 'estado', 'showModal']);
         $this->resetErrorBag();
         $this->emitTo('ordenes.ordenes-component', 'notification', ['message' => 'Orden editada exitosamente']);
     }
 
 
     public function close() {
-        $this->reset(['type_device_id', 'falla', 'accesorios', 'informe_cliente', 'informe_tecnico', 'remota', 'showModal']);
+        $this->reset(['type_device_id', 'falla', 'accesorios', 'informe_cliente', 'informe_tecnico', 'remota', 'estado', 'showModal']);
         $this->resetErrorBag();
     }
 
     public function render()
     {
         return view('livewire.ordenes.ordenes-edit', [
+            'states' => State::all(),
             'brands' => Brand::all(),
             'types' => TypeDevice::all(),
             'models' => ModelDevice::where('brand_id', $this->brand_id)->get()

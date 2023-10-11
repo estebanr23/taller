@@ -7,11 +7,12 @@ use App\Models\State;
 use App\Models\Ordenes;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class OrdenesFinalizar extends Component
 {
-    protected $listeners = ['finalizar', 'notification', 'exportPDF'];
+    protected $listeners = ['finalizar', 'notification', 'exportOrdenEntrega'];
     public $showModal= false;
     public $estado,$fecha_entrega,$informe_tecnico,$falla, $data;
 
@@ -60,7 +61,7 @@ class OrdenesFinalizar extends Component
                 'message' => 'Orden actualizada exitosamente',
                 'class' => "btn bg-success/10 font-medium text-success hover:bg-success/20 focus:bg-success/20 active:bg-success/25"
             ]);
-            return $this->exportPDF($this->data);
+            return $this->exportOrdenEntrega($this->data);
 
         } else {
 
@@ -79,7 +80,7 @@ class OrdenesFinalizar extends Component
         return response()->streamDownload(fn() => print($pdf), 'export.pdf');
     } */
 
-    public function exportPDF(Ordenes $order) {
+    public function exportOrdenEntrega(Ordenes $order) {
 
         $order_json = DB::table('orders')
                     ->where('orders.id', $order->id)
@@ -91,7 +92,7 @@ class OrdenesFinalizar extends Component
                     ->join('type_devices', 'devices.type_device_id', '=', 'type_devices.id')
                     ->join('brands', 'devices.brand_id', '=', 'brands.id')
                     ->join('models', 'devices.model_id', '=', 'models.id')
-                    ->select('orders.id', 'orders.problem', 'orders.accessories', 'orders.date_emission', 'orders.date_promise',
+                    ->select('orders.id', 'orders.problem', 'orders.accessories', 'orders.date_emission', 'orders.time_emission', 'orders.date_promise', 'orders.report_customer',
                             'customers.name', 'customers.lastname', 'areas.area_name', 'secretaries.secretary_name', 'customers.phone',
                             'devices.serial_number', 'type_devices.type_name', 'brands.brand_name', 'models.model_name',
                             'users.name as technical_user')
@@ -102,8 +103,9 @@ class OrdenesFinalizar extends Component
         // Formateo los datos para enviar a la vista
         $data = $order_json[0];
         $data->receiver_user = $receiver_user->name;
+        $data->time_emission = Carbon::parse($data->time_emission)->format('H:i');
 
-        $this->emit('exportOrden', ['order' => $data]);
+        $this->emit('exportEntregaView', ['order' => $data]);
     }
 
     public function close() {

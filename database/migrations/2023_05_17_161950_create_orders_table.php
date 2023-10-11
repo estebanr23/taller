@@ -21,7 +21,8 @@ return new class extends Migration
             $table->string('accessories')->nullable();
             $table->string('report_customer')->nullable();
             $table->string('report_technical')->nullable();
-            $table->date('date_emission');
+            $table->date('date_emission'); // Fecha de recepcion
+            $table->time('time_emission', $precision = 0); // Hora de recepcion
             $table->date('date_promise'); // Fecha prometida
             $table->date('date_delivery')->nullable();
             $table->foreignId('state_id')->constrained();

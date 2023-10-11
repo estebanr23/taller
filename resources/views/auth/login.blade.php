@@ -7,7 +7,7 @@
         <div class="text-center">
           <img
             class="mx-auto h-16 w-16 lg:hidden"
-            src="{{asset('assets/images/app-logo.svg')}}"
+            src="{{asset('assets/images/logo-muni.png')}}"
             alt="logo"
           />
           <div class="mt-4">

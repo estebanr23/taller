@@ -228,21 +228,21 @@
                            </label>
                               <label class="block sm:col-span-6">
                                   <span>Tipo de orden:</span>
-                                  <div class="flex justify-between align-middle gap-6">
+                                  <div class="flex justify-between align-middle gap-6 mt-1.5">
                                     <input class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2  placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                                     placeholder="" wire:model="tipo_orden" type="text"disabled />
                                   </div>
                               </label>
                               <label class="block sm:col-span-6">
                                   <span>Estado de la orden:</span>
-                                  <div class="flex justify-between align-middle gap-6">
+                                  <div class="flex justify-between align-middle gap-6 mt-1.5">
                                     <input class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2  placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                                     placeholder="" wire:model="estado" type="text" disabled/>
                                   </div>
                               </label>
                               <label class="block sm:col-span-6">
                                   <span>Ticket:</span>
-                                  <div class="flex justify-between align-middle gap-6">
+                                  <div class="flex justify-between align-middle gap-6 mt-1.5">
                                     <input class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2  placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                                     placeholder="" wire:model="ticket" type="text" disabled/>
                                   </div>

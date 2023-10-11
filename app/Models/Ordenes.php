@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\TimeCast;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -15,7 +16,7 @@ class Ordenes extends Model
     public $timestamps = false;
 
     protected $fillable = ['id', 'device_id', 'customer_id','receiver_user','user_id','problem', 'accessories','report_customer',
-    'report_technical','date_emission', 'date_promise', 'date_delivery','state_id','type_order','remote_repair','ticket_id', 'created_order'];
+    'report_technical','date_emission', 'time_emission', 'date_promise', 'date_delivery','state_id','type_order','remote_repair','ticket_id', 'created_order'];
 
 
     public function Customer()
@@ -45,5 +46,4 @@ class Ordenes extends Model
     {
         return $this->belongsTo(User::class, 'receiver_user', 'id');
     }
-
 }

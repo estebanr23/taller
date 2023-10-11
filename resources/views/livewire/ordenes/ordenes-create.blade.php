@@ -536,6 +536,17 @@
                         @enderror
                         </label>
                         <label class="block sm:col-span-6">
+                            <span> Hora de emision</span>
+                            <span class="relative mt-1.5 flex">
+                                <input wire:model="hora_emision"
+                                    class="form-input peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2  placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
+                                    type="time" />
+                            </span>
+                            @error('hora_emision')
+                            <span class="text-error">{{ $message }}</span>
+                        @enderror
+                        </label>
+                        <label class="block sm:col-span-6">
                             <span> Fecha prometida</span>
                             <span class="relative mt-1.5 flex">
                                 <input wire:model="fecha_prometida"
@@ -708,25 +719,14 @@
     </div>
 </div>
 
-{{-- @push('js')
+@push('js')
     <script>
-
-        Livewire.on('exportOrden', async(order) => {
+        Livewire.on('exportOrdenView', async(order) => {
             const data = {
                 convertTo: "pdf",
                 data: order.order,
                 template: "orden_taller.docx"
             }
-
-            /* return await fetch('https://reportes.cc.gob.ar/carbone', {
-                method: 'POST',
-                convertTo: "pdf",
-                data: {
-                    ...order,
-                    receiver_user
-                },
-                template: "orden_prueba.docx"
-            }); */
 
             const response = await fetch('https://reportes.cc.gob.ar/carbone', {
                 method: 'POST',
@@ -747,6 +747,5 @@
 
             window.location.href = "{{ route('ordenes.index') }}";
         });
-
     </script>
-@endpush --}}
+@endpush

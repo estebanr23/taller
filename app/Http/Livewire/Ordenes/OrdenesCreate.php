@@ -28,7 +28,7 @@ class OrdenesCreate extends Component
     public $EquipoForm=false;
     public $TecnicoForm=false;
     public $DatosCliente=false;
-    public $nombre_cliente,$apellido_cliente,$telefono,$DNI,$legajo,$falla, $accesorios, $informe_cliente,$informe_tecnico,$fecha_emision,$fecha_prometida,$persona,$ticket;
+    public $nombre_cliente,$apellido_cliente,$telefono,$DNI,$legajo,$falla, $accesorios, $informe_cliente,$informe_tecnico,$fecha_emision,$hora_emision,$fecha_prometida,$persona,$ticket;
     public $type_device_id='';
     public $brand_id='';
     public $tecnico_id='';
@@ -85,6 +85,7 @@ class OrdenesCreate extends Component
 
     protected $rulesTecnico = [
         'fecha_emision'=>'required',
+        'hora_emision'=>'required',
         'fecha_prometida'=>'required',
         'orden'=>'required',
         'ticket'=>'required|unique:tickets,description',
@@ -112,6 +113,7 @@ class OrdenesCreate extends Component
             'telefono.min' => 'El telefono debe tener al menos 7 caracteres',
             'area_id.required' => 'El area es requerida',
             'fecha_emision'=>'Fecha en la que se crea la orden requerido',
+            'hora_emision'=>'La hora de recepción es requerida',
             'fecha_prometida'=>'Fecha de prometido es requerida',
             'orden.required'=>'Tipo de orden requerido',
             'ticket.required'=>'Tiene que generar un numero de ticket',
@@ -244,6 +246,7 @@ class OrdenesCreate extends Component
                 /* 'report_customer'=>$this->informe_cliente,
                 'report_technical'=>$this->informe_tecnico, */
                 'date_emission'=>$this->fecha_emision,
+                'time_emission'=>$this->hora_emision,
                 'date_promise'=>$this->fecha_prometida,
                 // 'date_delivery'=>$this->fecha_entrega,
                 'state_id'=>$this->estado,
@@ -276,6 +279,7 @@ class OrdenesCreate extends Component
                 /* 'report_customer'=>$this->informe_cliente,
                 'report_technical'=>$this->informe_tecnico, */
                 'date_emission'=>$this->fecha_emision,
+                'time_emission'=>$this->hora_emision,
                 'date_promise'=>$this->fecha_prometida,
                 // 'date_delivery'=>$this->fecha_entrega,
                 'state_id'=>$this->estado,
@@ -297,9 +301,9 @@ class OrdenesCreate extends Component
                     ->join('type_devices', 'devices.type_device_id', '=', 'type_devices.id')
                     ->join('brands', 'devices.brand_id', '=', 'brands.id')
                     ->join('models', 'devices.model_id', '=', 'models.id')
-                    ->select('orders.id', 'orders.problem', 'orders.accessories', 'orders.date_emission', 'orders.date_promise', 
-                            'customers.name', 'customers.lastname', 'areas.area_name', 'secretaries.secretary_name',
-                            'devices.serial_number', 'brands.brand_name', 'models.model_name',
+                    ->select('orders.id', 'orders.problem', 'orders.accessories', 'orders.date_emission', 'orders.time_emission', 'orders.date_promise', 
+                            'customers.name', 'customers.lastname', 'areas.area_name', 'secretaries.secretary_name', 'customers.phone',
+                            'devices.serial_number','type_devices.type_name', 'brands.brand_name', 'models.model_name',
                             'users.name as technical_user')
                     ->get();
 
@@ -308,12 +312,10 @@ class OrdenesCreate extends Component
         // Formateo los datos para enviar a la vista
         $data = $order_json[0];
         $data->receiver_user = $receiver_user->name;
+        $data->time_emission = Carbon::parse($data->time_emission)->format('H:i');
 
-        $this->emit('exportOrden', ['order' => $data]);
+        $this->emit('exportOrdenView', ['order' => $data]);
         $this->emitTo('ordenes.ordenes-component', 'notification', ['message' => 'Orden actualizada exitosamente']);
-        
-        // redirect()->route('ordenes.index');
-        // return $this->exportPDF($order);
     }
 
     // Areas
@@ -423,10 +425,10 @@ class OrdenesCreate extends Component
     }
 
     // Export PDF
-    public function exportPDF(Ordenes $order) {
+    /* public function exportPDF(Ordenes $order) {
         $pdf = Pdf::loadView('reports.order-create', ['order' => $order])->output();
         return response()->streamDownload(fn() => print($pdf), 'export.pdf');
-    }
+    } */
 
     public function notification($notification)
     {

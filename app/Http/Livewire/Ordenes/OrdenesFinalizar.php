@@ -14,7 +14,7 @@ class OrdenesFinalizar extends Component
 {
     protected $listeners = ['finalizar', 'notification', 'exportOrdenEntrega'];
     public $showModal= false;
-    public $estado,$fecha_entrega,$informe_tecnico,$falla, $data;
+    public $estado,$informe_tecnico,$falla, $data;
 
 
     public function finalizar(Ordenes $orden)
@@ -30,10 +30,6 @@ class OrdenesFinalizar extends Component
         'falla'=>'required',
     ];
 
-    /* protected $rulesEstado=[
-        'fecha_entrega'=>'required'
-    ]; */
-
     protected function messages()
     {
         return [
@@ -45,7 +41,6 @@ class OrdenesFinalizar extends Component
     {
         if($this->estado==5 || $this->estado==4)
         {
-            // $this->validate($this->rulesEstado);
             $this->validate($this->rulesFinalizar);
 
             $this->data->update([
@@ -55,7 +50,7 @@ class OrdenesFinalizar extends Component
                 'state_id'=>$this->estado,
             ]);
 
-            $this->reset(['falla','informe_tecnico','fecha_entrega','estado','showModal']);
+            $this->reset(['falla','informe_tecnico','estado','showModal']);
             $this->resetErrorBag();
             $this->emitTo('ordenes.ordenes-component', 'notification', [
                 'message' => 'Orden actualizada exitosamente',
@@ -65,7 +60,7 @@ class OrdenesFinalizar extends Component
 
         } else {
 
-            $this->reset(['falla','informe_tecnico','fecha_entrega','estado','showModal']);
+            $this->reset(['falla','informe_tecnico','estado','showModal']);
             $this->resetErrorBag();
             $this->emitTo('ordenes.ordenes-component', 'notification', [
                 'message' => 'Error al finalizar orden',
@@ -73,12 +68,6 @@ class OrdenesFinalizar extends Component
             ]);
         }
     }
-
-    // Export PDF
-    /* public function exportPDF(Ordenes $order) {
-        $pdf = Pdf::loadView('reports.order-completed', ['order' => $order])->output();
-        return response()->streamDownload(fn() => print($pdf), 'export.pdf');
-    } */
 
     public function exportOrdenEntrega(Ordenes $order) {
 
@@ -92,7 +81,7 @@ class OrdenesFinalizar extends Component
                     ->join('type_devices', 'devices.type_device_id', '=', 'type_devices.id')
                     ->join('brands', 'devices.brand_id', '=', 'brands.id')
                     ->join('models', 'devices.model_id', '=', 'models.id')
-                    ->select('orders.id', 'orders.problem', 'orders.accessories', 'orders.date_emission', 'orders.time_emission', 'orders.date_promise', 'orders.report_customer',
+                    ->select('orders.id', 'orders.problem', 'orders.accessories', 'orders.date_emission', 'orders.time_emission', 'orders.date_promise', 'orders.report_customer', 'orders.date_delivery',
                             'customers.name', 'customers.lastname', 'areas.area_name', 'secretaries.secretary_name', 'customers.phone',
                             'devices.serial_number', 'type_devices.type_name', 'brands.brand_name', 'models.model_name',
                             'users.name as technical_user')
@@ -109,7 +98,7 @@ class OrdenesFinalizar extends Component
     }
 
     public function close() {
-        $this->reset(['falla','informe_tecnico','fecha_entrega','estado','showModal']);
+        $this->reset(['falla','informe_tecnico','estado','showModal']);
         $this->resetErrorBag();
     }
 

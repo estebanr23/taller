@@ -111,6 +111,7 @@
                                 <td class="whitespace-nowrap px-4 py-3 sm:px-5">
                                     <span>
                                         <div class="flex justify-start space-x-2">
+
                                             <button 
                                                 x-tooltip.primary="'Ver más'"
                                                 wire:click="$emitTo('ordenes.ordenes-ver', 'ver', {{$orden->id}})" 
@@ -119,8 +120,6 @@
                                                 <i class="fa fa-eye" ></i>
                                             </button>
 
-
-
                                             @if ($user->role=='administrador')
                                                 <button 
                                                     x-tooltip.info="'Editar'"
@@ -128,60 +127,10 @@
                                                     class="btn h-8 w-8 p-0 text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25"
                                                 >
                                                     <i class="fa fa-edit"></i>
-                                                </button>
-
-                                                @if($orden->user_id==null)
-                                                    <button 
-                                                        x-tooltip.warning="'Asignar Técnico'"
-                                                        wire:click="$emitTo('ordenes.ordenes-asignar', 'asignar', {{$orden->id}})" 
-                                                        class="btn h-8 w-8 p-0 text-warning hover:bg-warning/20 focus:bg-warning/20 active:bg-warning/25"
-                                                    >
-                                                        <i class="fa fa-user" ></i>
-                                                    </button> 
-                                                @endif
-
-                                                @if ($orden->State->id != 5)
-                                                    <button 
-                                                        x-tooltip.success="'Finalizar Orden'"
-                                                        wire:click="$emitTo('ordenes.ordenes-finalizar', 'finalizar', {{$orden->id}})" 
-                                                        class="btn h-8 w-8 p-0 text-success hover:bg-success/20 focus:bg-success/20 active:bg-success/25"
-                                                    >
-                                                        <i class="fa fa-check"></i>
-                                                    </button>
-                                                @endif
+                                                </button>  
                                             @endif
 
-                                            @if ($user->role=='tecnico')
-                                                @if($orden->State->id!=4 && $orden->State->id!=5 && $orden->user_id==$user->id)
-                                                    <button 
-                                                        x-tooltip.info="'Editar'"
-                                                        wire:click="$emitTo('ordenes.ordenes-edit', 'editar', {{$orden->id}})" 
-                                                        class="btn h-8 w-8 p-0 text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25"
-                                                    >
-                                                        <i class="fa fa-edit"></i>
-                                                    </button>
-
-                                                    <button 
-                                                        x-tooltip.success="'Finalizar Orden'"
-                                                        wire:click="$emitTo('ordenes.ordenes-finalizar', 'finalizar', {{$orden->id}})" 
-                                                        class="btn h-8 w-8 p-0 text-success hover:bg-success/20 focus:bg-success/20 active:bg-success/25"
-                                                    >
-                                                        <i class="fa fa-check"></i>
-                                                    </button>
-                                                @endif
-                                            @endif
-
-                                            @if ($orden->State->id == 5)
-                                                <button
-                                                    x-tooltip.error="'Reporte Finalización'"
-                                                    wire:click="$emitTo('ordenes.ordenes-finalizar', 'exportOrdenEntrega', {{$orden}})" 
-                                                    class="btn h-8 w-8 p-0 text-error hover:bg-error/20 focus:bg-error/20 active:bg-error/25"
-                                                >
-                                                    <i class="fa fa-file-pdf"></i>
-                                                </button>                                            
-                                            @endif
-
-                                            {{-- @if ($orden->State->id!=4 && $orden->State->id!=5)
+                                            @if ($orden->State->id!=4 && $orden->State->id!=5)
                                                 @if($user->role=='administrador' && $orden->user_id==null)
                                                     <button 
                                                         x-tooltip.warning="'Asignar Técnico'"
@@ -191,13 +140,13 @@
                                                         <i class="fa fa-user" ></i>
                                                     </button>
                                                 @endif
-                                                    <button 
+                                                    {{-- <button 
                                                         x-tooltip.info="'Editar'"
                                                         wire:click="$emitTo('ordenes.ordenes-edit', 'editar', {{$orden->id}})" 
                                                         class="btn h-8 w-8 p-0 text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25"
                                                     >
                                                         <i class="fa fa-edit"></i>
-                                                    </button>
+                                                    </button> --}}
                                                 @if ($orden->user_id!=null)
                                                     <button 
                                                         x-tooltip.success="'Finalizar Orden'"
@@ -217,7 +166,7 @@
                                                 >
                                                     <i class="fa fa-file-pdf"></i>
                                                 </button>
-                                            @endif --}}
+                                            @endif
 
                                         </div>
                                     </span>

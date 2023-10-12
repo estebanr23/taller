@@ -301,7 +301,7 @@ class OrdenesCreate extends Component
                     ->join('type_devices', 'devices.type_device_id', '=', 'type_devices.id')
                     ->join('brands', 'devices.brand_id', '=', 'brands.id')
                     ->join('models', 'devices.model_id', '=', 'models.id')
-                    ->select('orders.id', 'orders.problem', 'orders.accessories', 'orders.date_emission', 'orders.time_emission', 'orders.date_promise', 
+                    ->select('orders.id', 'orders.problem', 'orders.accessories', 'orders.date_emission', 'orders.time_emission', 'orders.date_promise', 'orders.date_delivery',
                             'customers.name', 'customers.lastname', 'areas.area_name', 'secretaries.secretary_name', 'customers.phone',
                             'devices.serial_number','type_devices.type_name', 'brands.brand_name', 'models.model_name',
                             'users.name as technical_user')

@@ -20,7 +20,7 @@ class UserCreate extends Component
         'name' => 'required|string',
         'username' => 'required|string|unique:users',
         'password' => 'required|min:8',
-        'dni' => 'required|min:7|unique:customers,dni',
+        'dni' => 'required|min:7|unique:users,dni',
     ];
 
     protected function messages() 

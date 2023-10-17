@@ -116,9 +116,12 @@ class OrdenesEdit extends Component
 
     public function render()
     {
+        auth()->user()->role == 'administrador'
+            ? $states = State::all()
+            : $states = State::where('id', '!=', 4)->where('id', '!=', 5)->get();
+
         return view('livewire.ordenes.ordenes-edit', [
-            // 'states' => State::where('id', '!=', 4)->where('id', '!=', 5)->get(),
-            'states' => State::all(),
+            'states' => $states,
             'brands' => Brand::all(),
             'types' => TypeDevice::all(),
             'models' => ModelDevice::where('brand_id', $this->brand_id)->get()

@@ -46,4 +46,24 @@ class Ordenes extends Model
     {
         return $this->belongsTo(User::class, 'receiver_user', 'id');
     }
+
+    public function setProblemAttribute($value)
+    {
+        $this->attributes['problem'] = strtoupper($value);
+    }
+
+    public function setAccessoriesAttribute($value)
+    {
+        $this->attributes['accessories'] = strtoupper($value);
+    }
+
+    public function setReportCustomerAttribute($value)
+    {
+        $this->attributes['report_customer'] = strtoupper($value);
+    }
+
+    public function setReportTechnicalAttribute($value)
+    {
+        $this->attributes['report_technical'] = strtoupper($value);
+    }
 }

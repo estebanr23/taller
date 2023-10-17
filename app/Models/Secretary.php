@@ -22,4 +22,9 @@ class Secretary extends Model
     {
         return $this->hasMany(Area::class);
     }
+
+    public function setSecretaryNameAttribute($value)
+    {
+        $this->attributes['secretary_name'] = strtoupper($value);
+    }
 }

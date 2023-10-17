@@ -561,13 +561,13 @@
                             <div class="flex justify-between align-middle gap-6">
                                 <select class="mt-1.5 w-full" x-init="$el._tom = new Tom($el, { create: false, sortField: { field: 'text', direction: 'asc' } })" wire:model="orden">
                                     <option value="" disabled>-- Un tipo de orden --</option>
-                                    <option value="Falla de Hardware">Falla de Hardware</option>
-                                    <option value="Falla de Software">Falla de Software</option>
-                                    <option value="Activación de Software">Activación de Software</option>
-                                    <option value="Limpieza de Soft/Hard">Limpieza de Soft/Hard</option>
-                                    <option value="Instalación de SO">Instalación de SO</option>
-                                    <option value="Instalación de Programas">Instalación de Programas</option>
-                                    <option value="Otros">Otros</option>
+                                    <option value="FALLA DE HARDWARE">FALLA DE HARDWARE</option>
+                                    <option value="FALLA DE SOFTWARE">FALLA DE SOFTWARE</option>
+                                    <option value="ACTIVACIÓN DE SOFTWARE">ACTIVACIÓN DE SOFTWARE</option>
+                                    <option value="LIMPIEZA DE SOFT/HARD">LIMPIEZA DE SOFT/HARD</option>
+                                    <option value="INSTALACIÓN DE SO">INSTALACIÓN DE SO</option>
+                                    <option value="INSTALACIÓN DE PROGRAMAS">INSTALACIÓN DE PROGRAMAS</option>
+                                    <option value="OTROS">OTROS</option>
                                 </select>
                             </div>
                             @error('orden') <span class="text-error">{{ $message }}</span> @enderror

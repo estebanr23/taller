@@ -23,4 +23,14 @@ class Customer extends Model
     {
         return $this->belongsTo(Area::class);
     }
+
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = strtoupper($value);
+    }
+
+    public function setLastnameAttribute($value)
+    {
+        $this->attributes['lastname'] = strtoupper($value);
+    }
 }

@@ -20,4 +20,9 @@ class ModelDevice extends Model
     {
         return $this->belongsTo(Brand::class);
     }
+
+    public function setModelNameAttribute($value)
+    {
+        $this->attributes['model_name'] = strtoupper($value);
+    }
 }

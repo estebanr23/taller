@@ -18,4 +18,9 @@ class Area extends Model
     {
         return $this->belongsTo(Secretary::class);
     }
+
+    public function setAreaNameAttribute($value)
+    {
+        $this->attributes['area_name'] = strtoupper($value);
+    }
 }

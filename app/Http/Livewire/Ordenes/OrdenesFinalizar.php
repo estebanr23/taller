@@ -56,7 +56,13 @@ class OrdenesFinalizar extends Component
                 'message' => 'Orden actualizada exitosamente',
                 'class' => "btn bg-success/10 font-medium text-success hover:bg-success/20 focus:bg-success/20 active:bg-success/25"
             ]);
-            return $this->exportOrdenEntrega($this->data);
+
+            if ($this->data->created_order == 'Taller') {
+                return $this->exportOrdenEntrega($this->data);
+            } else {
+                $this->emitTo('ordenes.ordenes-component', 'notification', ['message' => 'Orden finalizada exitosamente']);
+                return redirect()->route('ordenes.index');
+            }
 
         } else {
 

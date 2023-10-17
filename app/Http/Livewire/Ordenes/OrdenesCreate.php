@@ -290,32 +290,41 @@ class OrdenesCreate extends Component
             ]);
         }
 
-        // Realizo la consulta con los datos necesarios para generar el pdf
-        $order_json = DB::table('orders')
-                    ->where('orders.id', $order->id)
-                    ->join('customers', 'orders.customer_id', '=', 'customers.id')
-                    ->join('devices', 'orders.device_id', '=', 'devices.id')
-                    ->join('users', 'orders.user_id', '=', 'users.id')
-                    ->join('areas', 'customers.area_id', '=', 'areas.id')
-                    ->join('secretaries', 'areas.secretary_id', '=', 'secretaries.id')
-                    ->join('type_devices', 'devices.type_device_id', '=', 'type_devices.id')
-                    ->join('brands', 'devices.brand_id', '=', 'brands.id')
-                    ->join('models', 'devices.model_id', '=', 'models.id')
-                    ->select('orders.id', 'orders.problem', 'orders.accessories', 'orders.date_emission', 'orders.time_emission', 'orders.date_promise', 'orders.date_delivery',
-                            'customers.name', 'customers.lastname', 'areas.area_name', 'secretaries.secretary_name', 'customers.phone',
-                            'devices.serial_number','type_devices.type_name', 'brands.brand_name', 'models.model_name',
-                            'users.name as technical_user')
-                    ->get();
+        if ($order->created_order == 'Taller') {
 
-        $receiver_user = User::where('id', $order->receiver_user)->first();
+            // Realizo la consulta con los datos necesarios para generar el pdf
+            $order_json = DB::table('orders')
+            ->where('orders.id', $order->id)
+            ->join('customers', 'orders.customer_id', '=', 'customers.id')
+            ->join('devices', 'orders.device_id', '=', 'devices.id')
+            ->join('users', 'orders.user_id', '=', 'users.id')
+            ->join('areas', 'customers.area_id', '=', 'areas.id')
+            ->join('secretaries', 'areas.secretary_id', '=', 'secretaries.id')
+            ->join('type_devices', 'devices.type_device_id', '=', 'type_devices.id')
+            ->join('brands', 'devices.brand_id', '=', 'brands.id')
+            ->join('models', 'devices.model_id', '=', 'models.id')
+            ->select('orders.id', 'orders.problem', 'orders.accessories', 'orders.date_emission', 'orders.time_emission', 'orders.date_promise', 'orders.date_delivery',
+                    'customers.name', 'customers.lastname', 'areas.area_name', 'secretaries.secretary_name', 'customers.phone',
+                    'devices.serial_number','type_devices.type_name', 'brands.brand_name', 'models.model_name',
+                    'users.name as technical_user')
+            ->get();
 
-        // Formateo los datos para enviar a la vista
-        $data = $order_json[0];
-        $data->receiver_user = $receiver_user->name;
-        $data->time_emission = Carbon::parse($data->time_emission)->format('H:i');
+            $receiver_user = User::where('id', $order->receiver_user)->first();
 
-        $this->emit('exportOrdenView', ['order' => $data]);
-        $this->emitTo('ordenes.ordenes-component', 'notification', ['message' => 'Orden actualizada exitosamente']);
+            // Formateo los datos para enviar a la vista
+            $data = $order_json[0];
+            $data->receiver_user = $receiver_user->name;
+            $data->time_emission = Carbon::parse($data->time_emission)->format('H:i');
+
+            $this->emitTo('ordenes.ordenes-component', 'notification', ['message' => 'Orden creada exitosamente']);
+            $this->emit('exportOrdenView', ['order' => $data]);
+
+        } else {
+
+            $this->emitTo('ordenes.ordenes-component', 'notification', ['message' => 'Orden creada exitosamente']);
+            return redirect()->route('ordenes.index');
+
+        }     
     }
 
     // Areas

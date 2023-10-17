@@ -120,6 +120,21 @@
 
                         @if ($created_order == 'Domicilio')
                             <label class="block sm:col-span-6">
+                                <span>Estado:</span>
+                                <div class="flex justify-between align-middle gap-2">
+                                    <select class="mt-1.5 w-full" x-init="$el._tom = new Tom($el, { create: false, sortField: { field: 'text', direction: 'asc' } })" wire:model="estado">
+                                        <option value="" disabled>-- Seleccionar un estado --</option>
+                                        @foreach ($states as $state)
+                                            <option value="{{ $state->id }}">{{ $state->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                @error('estado')
+                                    <span class="text-error">{{ $message }}</span>
+                                @enderror
+                            </label>
+
+                            <label class="block sm:col-span-6">
                                 <p>Cosulta remota</p>
                                 <input
                                     wire:model="remota"

@@ -21,4 +21,9 @@ class Brand extends Model
     {
         return $this->hasMany(ModelDevice::class);
     }
+
+    public function setBrandNameAttribute($value)
+    {
+        $this->attributes['brand_name'] = strtoupper($value);
+    }
 }

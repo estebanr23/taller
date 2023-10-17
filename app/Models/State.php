@@ -13,5 +13,8 @@ class State extends Model
 
     protected $fillable = ['id', 'name'];
 
-
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = strtoupper($value);
+    }
 }

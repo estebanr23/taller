@@ -18,11 +18,12 @@ class StatusSeeder extends Seeder
         DB::statement('SET FOREIGN_KEY_CHECKS = 1;');
 
         DB::table('states')->insert([
-            ['name' => 'En Reparación'],
-            ['name' => 'Espera de Repuesto'],
-            ['name' => 'Equipo Dañando'],
-            ['name' => 'Para dar de baja'],
-            ['name' => 'Solucionado']
+            ['name' => 'EN REPARACIÓN'],
+            ['name' => 'ESPERA DE REPUESTO'],
+            ['name' => 'EQUIPO DAÑADO'],
+            ['name' => 'PARA DAR DE BAJA'],
+            ['name' => 'SOLUCIONADO'],
+            ['name' => 'LISTO PARA ENTREGAR'],
         ]);
     }
 }

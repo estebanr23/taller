@@ -87,7 +87,7 @@ class OrdenesEdit extends Component
                 'accessories'=>$this->accesorios,
                 'report_customer'=>$this->informe_cliente,
                 'report_technical'=>$this->informe_tecnico,
-                'state_id'=>$this->estado,
+                // 'state_id'=>$this->estado,
             ]);
 
         } else {
@@ -98,7 +98,7 @@ class OrdenesEdit extends Component
                 'report_customer'=>$this->informe_cliente,
                 'report_technical'=>$this->informe_tecnico,
                 'remote_repair'=>$this->remota,
-                'state_id'=>$this->estado,
+                // 'state_id'=>$this->estado,
             ]);
 
         }

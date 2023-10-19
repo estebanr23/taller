@@ -449,11 +449,11 @@ class OrdenesCreate extends Component
         return view('livewire.ordenes.ordenes-create', [
             'brands' => Brand::all(),
             'types' => TypeDevice::all(),
-            'tecnicos'=>User::all(),
+            'tecnicos'=> User::all(),
             'secretaries' => Secretary::all(),
             'areas' => Area::where('secretary_id', $this->secretary_id)->get(),
-            'estados'=>State::all(),
-            'user'=>Auth::user(),
+            'estados'=> State::where('id', '!=', 4)->where('id', '!=', 5)->get(),
+            'user'=> Auth::user(),
             'models' => ModelDevice::where('brand_id', $this->brand_id)->get()
         ]);
     }

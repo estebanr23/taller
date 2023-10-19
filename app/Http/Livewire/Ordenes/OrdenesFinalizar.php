@@ -37,7 +37,7 @@ class OrdenesFinalizar extends Component
         ];
     }
 
-   public function update()
+   /* public function update()
     {
         if($this->estado==5 || $this->estado==4)
         {
@@ -53,7 +53,7 @@ class OrdenesFinalizar extends Component
             $this->reset(['falla','informe_tecnico','estado','showModal']);
             $this->resetErrorBag();
             $this->emitTo('ordenes.ordenes-component', 'notification', [
-                'message' => 'Orden actualizada exitosamente',
+                'message' => 'Orden finalizada exitosamente',
                 'class' => "btn bg-success/10 font-medium text-success hover:bg-success/20 focus:bg-success/20 active:bg-success/25"
             ]);
 
@@ -73,7 +73,53 @@ class OrdenesFinalizar extends Component
                 'class' => "btn bg-error/10 font-medium text-error hover:bg-error/20 focus:bg-error/20 active:bg-error/25"
             ]);
         }
-    }
+    } */
+
+    public function update()
+    {
+        if($this->estado==5 || $this->estado==4)
+        {
+            $this->validate($this->rulesFinalizar);
+
+            $this->data->update([
+                'problem'=>$this->falla,
+                'report_technical'=>$this->informe_tecnico,
+                'date_delivery'=> date('Y-m-d'), // Agrega la fecha del sistema
+                'state_id'=>$this->estado,
+            ]);
+
+            $this->reset(['falla','informe_tecnico','estado','showModal']);
+            $this->resetErrorBag();
+            $this->emitTo('ordenes.ordenes-component', 'notification', [
+                'message' => 'Orden finalizada exitosamente',
+                'class' => "btn bg-success/10 font-medium text-success hover:bg-success/20 focus:bg-success/20 active:bg-success/25"
+            ]);
+
+            if ($this->data->created_order == 'Taller') {
+                return $this->exportOrdenEntrega($this->data);
+            } else {
+                return redirect()->route('ordenes.index');
+                $this->emitTo('ordenes.ordenes-component', 'notification', ['message' => 'Orden finalizada exitosamente']);
+            }
+
+        } else {
+
+            $this->validate($this->rulesFinalizar);
+
+            $this->data->update([
+                'problem'=>$this->falla,
+                'report_technical'=>$this->informe_tecnico,
+                'state_id'=>$this->estado,
+            ]);
+
+            $this->reset(['falla','informe_tecnico','estado','showModal']);
+            $this->resetErrorBag();
+            $this->emitTo('ordenes.ordenes-component', 'notification', [
+                'message' => 'Orden actualizada correctamente',
+                'class' => "btn bg-error/10 font-medium text-error hover:bg-error/20 focus:bg-error/20 active:bg-error/25"
+            ]);
+        }
+    } 
 
     public function exportOrdenEntrega(Ordenes $order) {
 

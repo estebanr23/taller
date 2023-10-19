@@ -73,7 +73,7 @@
                                     @enderror
                                 </label>
 
-                                <label class="block sm:col-span-6">
+                                {{-- <label class="block sm:col-span-6">
                                     <span>Estado:</span>
                                     <div class="flex justify-between align-middle gap-2">
                                         <select class="mt-1.5 w-full" x-init="$el._tom = new Tom($el, { create: false, sortField: { field: 'text', direction: 'asc' } })" wire:model="estado">
@@ -86,7 +86,7 @@
                                     @error('estado')
                                         <span class="text-error">{{ $message }}</span>
                                     @enderror
-                                </label>
+                                </label> --}}
                             </div>
                             <label class="block">
                                 <span>Accesorios</span>
@@ -119,7 +119,7 @@
                         </label>
 
                         @if ($created_order == 'Domicilio')
-                            <label class="block sm:col-span-6">
+                            {{-- <label class="block sm:col-span-6">
                                 <span>Estado:</span>
                                 <div class="flex justify-between align-middle gap-2">
                                     <select class="mt-1.5 w-full" x-init="$el._tom = new Tom($el, { create: false, sortField: { field: 'text', direction: 'asc' } })" wire:model="estado">
@@ -132,7 +132,7 @@
                                 @error('estado')
                                     <span class="text-error">{{ $message }}</span>
                                 @enderror
-                            </label>
+                            </label> --}}
 
                             <label class="block sm:col-span-6">
                                 <p>Cosulta remota</p>

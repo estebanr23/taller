@@ -40,10 +40,10 @@ class OrdenesComponent extends Component
 
         return view('livewire.ordenes.ordenes-component', [
             'ordenes' => Ordenes::withTrashed()
-                                    ->where('id', 'like', '%'.$this->search.'%')
-                                    ->where('created_order', $this->created_order)
-                                    ->orderBy('date_emission', 'desc')
-                                    ->paginate($this->pages),
+                                ->where('id', 'like', '%'.$this->search.'%')
+                                ->where('created_order', $this->created_order)
+                                ->orderBy('date_emission', 'desc')
+                                ->paginate($this->pages),
             'user'=>Auth::user(),
     ]);
     }

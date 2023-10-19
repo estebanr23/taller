@@ -140,7 +140,7 @@
                                                     </button> 
                                                 @endif
 
-                                                @if ($orden->State->id != 5)
+                                                {{-- @if ($orden->State->id != 5) --}}
                                                     <button 
                                                         x-tooltip.success="'Finalizar Orden'"
                                                         wire:click="$emitTo('ordenes.ordenes-finalizar', 'finalizar', {{$orden->id}})" 
@@ -148,7 +148,7 @@
                                                     >
                                                         <i class="fa fa-check"></i>
                                                     </button>
-                                                @endif
+                                                {{-- @endif --}}
                                             @endif
 
                                             @if ($user->role=='tecnico')
@@ -171,7 +171,7 @@
                                                 @endif
                                             @endif
 
-                                            @if ($orden->State->id == 5)
+                                            @if ($orden->State->id == 5 && $orden->created_order == 'Taller')
                                                 <button
                                                     x-tooltip.error="'Reporte Finalización'"
                                                     wire:click="$emitTo('ordenes.ordenes-finalizar', 'exportOrdenEntrega', {{$orden}})" 
